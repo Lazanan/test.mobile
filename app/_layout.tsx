@@ -1,59 +1,71 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { Stack, useRouter, useSegments } from 'expo-router';
+import { AuthProvider} from '../src/contexts/AuthContext';
+import { useAuth } from '@/src/hooks/useAuth';
+import React, { useEffect } from 'react';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { ActivityIndicator, View } from 'react-native';
+import { colors } from '../src/theme/colors';
 
-import { useColorScheme } from '@/components/useColorScheme';
-
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
-
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
-};
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
+// Empêcher le splash screen de se cacher automatiquement
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    ...FontAwesome.font,
+const InitialLayout = () => {
+  const { token, isLoading: isAuthLoading } = useAuth();
+  const segments = useSegments();
+  const router = useRouter();
+
+  // Charger les polices personnalisées
+  const [fontsLoaded, fontError] = useFonts({
+    'Lexend-Bold': require('../assets/fonts/Lexend-Bold.ttf'),
+    'Lexend-Light': require('../assets/fonts/Lexend-Light.ttf'),
+    'Lexend-Medium': require('../assets/fonts/Lexend-Medium.ttf'),
+    'Lexend-Regular': require('../assets/fonts/Lexend-Regular.ttf'),
+    'Lexend-SemiBold': require('../assets/fonts/Lexend-SemiBold.ttf'),
   });
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
-    if (error) throw error;
-  }, [error]);
+    // Si il y a une erreur de chargement de police, on l'affiche
+    if (fontError) throw fontError;
 
-  useEffect(() => {
-    if (loaded) {
+    // On attend que les polices soient chargées et que l'authentification soit vérifiée
+    if (fontsLoaded && !isAuthLoading) {
       SplashScreen.hideAsync();
-    }
-  }, [loaded]);
 
-  if (!loaded) {
-    return null;
+      const inAuthGroup = segments[0] === '(auth)';
+
+      // Redirection logique
+      if (!token && !inAuthGroup) {
+        router.replace('/login');
+      } else if (token && inAuthGroup) {
+        router.replace('/');
+      }
+    }
+  }, [fontsLoaded, fontError, isAuthLoading, token, segments]);
+
+  // Afficher un indicateur de chargement tant que tout n'est pas prêt
+  if (!fontsLoaded || isAuthLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
   }
 
-  return <RootLayoutNav />;
-}
-
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-
+  // Une fois chargé, on rend les routes de l'application
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
-    </ThemeProvider>
+    <Stack screenOptions={{ headerShown: false, animation: 'fade' }}>
+      <Stack.Screen name="(auth)" />
+      <Stack.Screen name="(app)" />
+    </Stack>
+  );
+};
+
+// Le layout racine qui englobe toute l'application avec le contexte d'authentification
+export default function RootLayout() {
+  return (
+    <AuthProvider>
+      <InitialLayout />
+    </AuthProvider>
   );
 }

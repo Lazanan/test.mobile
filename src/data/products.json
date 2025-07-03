@@ -1,0 +1,202 @@
+[
+  {
+    "id": "6",
+    "name": "Samsung Galaxy S24 Ultra",
+    "description": "Repoussez les limites de la photographie mobile avec le Galaxy AI. Un stylet S Pen intégré et un écran Dynamic AMOLED 2X ultra-lumineux pour une productivité sans compromis.",
+    "price": 1469.00,
+    "stock": 22,
+    "category": "Électronique",
+    "vendeurs": "Samsung Store",
+    "image": "https://img.20mn.fr/5s-sPfVYS0O6dvq81Sv5HSk/1444x920_samsung-galaxy-s24-ultra-200-euros-de-remise-seulement-cette-semaine"
+  },
+  {
+    "id": "7",
+    "name": "Google Pixel 8 Pro",
+    "description": "Le téléphone conçu par Google, avec l'IA au cœur de l'expérience. Des photos parfaites à chaque fois grâce à des fonctionnalités exclusives et un Android pur et intelligent.",
+    "price": 1099.00,
+    "stock": 35,
+    "category": "Électronique",
+    "vendeurs": "Google Store",
+    "image": "https://hd2.tudocdn.net/1147507?w=824&h=494"
+  },
+  {
+    "id": "8",
+    "name": "iPhone 15",
+    "description": "Le nouveau standard. Dynamic Island, un appareil photo principal 48 Mpx et un connecteur USB-C, le tout dans un design résistant en aluminium et Ceramic Shield.",
+    "price": 969.00,
+    "stock": 80,
+    "category": "Électronique",
+    "vendeurs": "Fnac",
+    "image": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-blue?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692923777972"
+  },
+  {
+    "id": "9",
+    "name": "OnePlus 12",
+    "description": "La performance à l'état pur. Un écran ProXDR époustouflant, une charge SUPERVOOC de 100W et un système de caméra Hasselblad pour des couleurs naturelles.",
+    "price": 949.00,
+    "stock": 45,
+    "category": "Électronique",
+    "vendeurs": "Amazon FR",
+    "image": "https://oasis.op-mobile.opera.com/op12/1000x1000/1-m-2.png"
+  },
+  {
+    "id": "10",
+    "name": "Samsung Galaxy Z Flip 5",
+    "description": "Le téléphone pliable qui tient dans votre poche. Un grand écran externe pour plus de fonctionnalités sans même l'ouvrir. L'expression de soi ultime.",
+    "price": 1199.00,
+    "stock": 30,
+    "category": "Électronique",
+    "vendeurs": "Boulanger",
+    "image": "https://images.samsung.com/is/image/samsung/p6pim/fr/2307/gallery/fr-galaxy-z-flip5-f731-sm-f731blgaeub-537330886?$650_519_PNG$"
+  },
+  {
+    "id": "11",
+    "name": "Xiaomi 14",
+    "description": "Co-développé avec Leica, ce smartphone offre une expérience photographique de niveau professionnel. Processeur Snapdragon 8 Gen 3 pour une puissance maximale.",
+    "price": 999.00,
+    "stock": 55,
+    "category": "Électronique",
+    "vendeurs": "MobileDirect",
+    "image": "https://i02.appmifile.com/61_operator_fr/23/02/2024/2984852c71f0081d6d1b46a94f068595.png?thumb=1&w=500&f=webp&q=85"
+  },
+  {
+    "id": "12",
+    "name": "Asus ROG Phone 8 Pro",
+    "description": "Le roi du gaming mobile. Gâchettes ultrasoniques AirTrigger, système de refroidissement avancé et un écran 165 Hz pour une fluidité de jeu inégalée.",
+    "price": 1199.99,
+    "stock": 15,
+    "category": "Électronique",
+    "vendeurs": "Tech Universe",
+    "image": "https://dlcdnwebimgs.asus.com/gain/4977463A-4F91-4475-A4F7-2510A2B99264/w800"
+  },
+  {
+    "id": "13",
+    "name": "Nothing Phone (2)",
+    "description": "Un design transparent iconique avec l'interface Glyph. Nothing OS 2.0 offre une expérience rapide et fluide, sans bloatware. Une bouffée d'air frais.",
+    "price": 679.00,
+    "stock": 65,
+    "category": "Électronique",
+    "vendeurs": "Nothing Tech",
+    "image": "https://fr.nothing.tech/cdn/shop/files/Phone_2_-White_1_1.png?v=1686645348&width=800"
+  },
+  {
+    "id": "14",
+    "name": "iPhone SE (3e génération)",
+    "description": "La puissance de la puce A15 Bionic dans un format compact et familier. La 5G, une meilleure autonomie et un appareil photo qui fait des merveilles. L'essentiel, en mieux.",
+    "price": 529.00,
+    "stock": 110,
+    "category": "Électronique",
+    "vendeurs": "Darty",
+    "image": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-se-finish-select-202207-starlight?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1655313337326"
+  },
+  {
+    "id": "15",
+    "name": "Samsung Galaxy A55 5G",
+    "description": "L'équilibre parfait entre performance et prix. Un superbe écran Super AMOLED, un design élégant et une batterie longue durée pour vous suivre toute la journée.",
+    "price": 499.00,
+    "stock": 95,
+    "category": "Électronique",
+    "vendeurs": "Orange",
+    "image": "https://images.samsung.com/is/image/samsung/p6pim/fr/2403/gallery/fr-galaxy-a55-5g-sm-a556bzbdeub-540348701?$650_519_PNG$"
+  },
+  {
+    "id": "16",
+    "name": "Google Pixel 7a",
+    "description": "Toute l'intelligence de Google à un prix plus accessible. La puce Google Tensor G2, la sécurité Titan M2 et un appareil photo exceptionnel.",
+    "price": 509.00,
+    "stock": 70,
+    "category": "Électronique",
+    "vendeurs": "Boulanger",
+    "image": "https://lh3.googleusercontent.com/x0cCF0oWSo2aBH905D4G3z2Sj4qfQ2JmvS40B4eO5a5N0NBv2fPTPz4qaB64z9g-ZpPjTfGqybkLqf3i6cTUCyqYxV6vj6w=rw-e365-w1094"
+  },
+  {
+    "id": "17",
+    "name": "Samsung Galaxy Z Fold 5",
+    "description": "Un véritable ordinateur dans votre poche. L'écran pliable intérieur de 7,6 pouces offre une expérience immersive pour le multitâche et le divertissement.",
+    "price": 1899.00,
+    "stock": 12,
+    "category": "Électronique",
+    "vendeurs": "Fnac",
+    "image": "https://images.samsung.com/is/image/samsung/p6pim/fr/2307/gallery/fr-galaxy-z-fold5-f946-sm-f946bzebeub-537330761?$650_519_PNG$"
+  },
+  {
+    "id": "18",
+    "name": "Fairphone 5",
+    "description": "Le smartphone conçu pour durer. Fabriqué avec des matériaux recyclés, facile à réparer et bénéficiant de 8 ans de mises à jour logicielles. Un choix éthique.",
+    "price": 699.00,
+    "stock": 40,
+    "category": "Électronique",
+    "vendeurs": "Fairphone BV",
+    "image": "https://shop.fairphone.com/cdn/shop/files/FP5_Matte_Black_Front_e7b0a39a-65da-48c8-b295-8bd05d64817a.png?v=1693393247&width=800"
+  },
+  {
+    "id": "19",
+    "name": "Oppo Find X7 Ultra",
+    "description": "Le maître du portrait. Un système à double périscope unique au monde et une optique Hasselblad pour des portraits d'une qualité inégalée.",
+    "price": 1150.00,
+    "stock": 28,
+    "category": "Électronique",
+    "vendeurs": "Tech Universe",
+    "image": "https://i.gadgets360cdn.com/products/large/Oppo-Find-X7-Ultra-DB-709x800-1704701257.jpg"
+  },
+  {
+    "id": "20",
+    "name": "Redmi Note 13 Pro+ 5G",
+    "description": "Un appareil photo de 200 Mpx et une charge HyperCharge de 120W à un prix défiant toute concurrence. L'expérience premium accessible à tous.",
+    "price": 469.90,
+    "stock": 130,
+    "category": "Électronique",
+    "vendeurs": "Mi Store",
+    "image": "https://i02.appmifile.com/i18n/product/redmi-note-13-pro-plus-5g/redmi-note-13-pro-plus-5g-black.png?w=500&f=webp"
+  },
+  {
+    "id": "21",
+    "name": "iPhone 14 Plus",
+    "description": "Un grand écran Super Retina XDR de 6,7 pouces et la meilleure autonomie jamais vue sur un iPhone. Parfait pour les films et les jeux.",
+    "price": 869.00,
+    "stock": 60,
+    "category": "Électronique",
+    "vendeurs": "Apple Store",
+    "image": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-finish-select-202209-6-7inch-blue?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1661027942918"
+  },
+  {
+    "id": "22",
+    "name": "Sony Xperia 1 V",
+    "description": "Le smartphone pour les créateurs. Un écran 4K HDR OLED 120Hz et des fonctionnalités de photographie et de vidéographie héritées des caméras Alpha de Sony.",
+    "price": 1399.00,
+    "stock": 25,
+    "category": "Électronique",
+    "vendeurs": "Sony",
+    "image": "https://www.sony.fr/image/7ddc13880252b12395561b36998188e7?fmt=pjpeg&wid=330&bgcolor=FFFFFF&bgc=FFFFFF"
+  },
+  {
+    "id": "23",
+    "name": "Honor Magic6 Pro",
+    "description": "Une percée dans la photographie de sport avec son Falcon Camera System. Un écran ultra-résistant et une batterie Silicium-Carbone de nouvelle génération.",
+    "price": 1099.90,
+    "stock": 38,
+    "category": "Électronique",
+    "vendeurs": "SFR",
+    "image": "https://d2e6ccujb38q5d.cloudfront.net/images/1709133880-Magic6-pro-black-list-page.png"
+  },
+  {
+    "id": "24",
+    "name": "Motorola Razr 40 Ultra",
+    "description": "Le plus grand écran externe sur un téléphone à clapet. Interagissez avec vos applications sans ouvrir votre téléphone. Un design fun et fonctionnel.",
+    "price": 899.00,
+    "stock": 42,
+    "category": "Électronique",
+    "vendeurs": "Darty",
+    "image": "https://www.motorola.fr/sites/default/files/razr-40-ultra-pdp-render-viva-magenta-front-open.png"
+  },
+  {
+    "id": "25",
+    "name": "OnePlus Open",
+    "description": "Le premier smartphone pliable de OnePlus. Un design léger et fin, un pli quasi invisible et des performances de pointe pour une expérience multitâche sans compromis.",
+    "price": 1849.00,
+    "stock": 10,
+    "category": "Électronique",
+    "vendeurs": "OnePlus",
+    "image": "https://oasis.op-mobile.opera.com/open/1000x1000/1-1-m.png"
+  }
+]
