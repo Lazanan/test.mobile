@@ -25,17 +25,17 @@ export default function SignupScreen() {
   // Pour l'instant, on simule une redirection
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { signup } = useAuth();
 
   const { control, handleSubmit, formState: { errors } } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
     defaultValues: { name: '', email: '', password: '' },
   });
 
-  const handleSignup = (data: SignupFormData) => {
+  const handleSignup = async(data: SignupFormData) => {
     setIsLoading(true);
     console.log('Signup data:', data);
-    // Ici, vous appelleriez votre fonction signup de l'API/contexte
-    // ex: await signup(data.name, data.email, data.password);
+    await signup(data.name, data.email, data.password);
     setTimeout(() => {
       Alert.alert('Succès', 'Compte créé ! Vous pouvez maintenant vous connecter.', [
         { text: 'OK', onPress: () => router.push('/login') },
@@ -63,6 +63,7 @@ export default function SignupScreen() {
               value={value}
               leftIcon={<User color={colors.text} size={20} />}
               error={errors.name?.message}
+              label='Name'
             />
           )}
         />
@@ -79,6 +80,7 @@ export default function SignupScreen() {
               autoCapitalize="none"
               leftIcon={<Mail color={colors.text} size={20} />}
               error={errors.email?.message}
+              label='Email'
             />
           )}
         />
@@ -94,6 +96,7 @@ export default function SignupScreen() {
               secureTextEntry
               leftIcon={<Lock color={colors.text} size={20} />}
               error={errors.password?.message}
+              label='Password'
             />
           )}
         />

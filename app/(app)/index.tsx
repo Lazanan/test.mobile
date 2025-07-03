@@ -1,15 +1,14 @@
 import React, { useState, useCallback } from 'react';
-import { FlatList, View, Text, Image, Pressable, StyleSheet } from 'react-native';
+import { View, Pressable, StyleSheet } from 'react-native';
 import { Screen } from '../../src/components/Screen';
 import { Card } from '../../src/components/Card';
 import { productApi } from '../../src/api/productApi';
 import { ProductDTO } from '../../src/dtos/ProductDTO';
-import { useRouter, useFocusEffect, Href } from 'expo-router'; 
+import { useRouter, useFocusEffect, Href } from 'expo-router';
 import { Plus } from 'lucide-react-native';
 import { colors, spacing } from '../../src/theme';
 import { LoadingIndicator } from '../../src/components/LoadingIndicator';
-
-import {UserCircle2Icon} from 'lucide-react-native'
+import { MasonryFlashList } from '@shopify/flash-list';
 
 export default function ProductListScreen() {
   const [products, setProducts] = useState<ProductDTO[]>([]);
@@ -21,8 +20,9 @@ export default function ProductListScreen() {
       const fetchProducts = async () => {
         setIsLoading(true);
         try {
+          // Pour un meilleur effet masonry, mélangeons les données
           const data = await productApi.getAll();
-          setProducts(data);
+          setProducts(data.sort(() => Math.random() - 0.5));
         } catch (error) {
           console.error("Failed to fetch products:", error);
         } finally {
@@ -40,19 +40,23 @@ export default function ProductListScreen() {
   const handleProductPress = (id: string) => {
     router.push(`/products/${id}` as Href);
   };
-  
+
   const handleAddPress = () => {
     router.push('/products/add');
   };
 
   return (
-    <Screen>
-      <FlatList
+    <Screen style={{ paddingHorizontal: spacing.sm }}>
+      <MasonryFlashList
         data={products}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <Card product={item} onPress={() => handleProductPress(item.id)} />}
+        numColumns={2}
+        renderItem={({ item }) => (
+          <Card product={item} onPress={() => handleProductPress(item.id)} />
+        )}
+        estimatedItemSize={225}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ gap: spacing.md, paddingBottom: 100 }}
+        contentContainerStyle={{ paddingBottom: 100 }}
       />
       <Pressable style={styles.fab} onPress={handleAddPress}>
         <View style={styles.fabShadow} />

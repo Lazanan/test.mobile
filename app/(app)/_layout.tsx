@@ -16,11 +16,11 @@ export default function AppLayout() {
         options={{
           title: 'Products',
           headerStyle: { backgroundColor: colors.background },
-          headerTitleStyle: { ...typography.h2 },
+          headerTitleStyle: { ...typography.h3, color: colors.yellow },
           headerShadowVisible: false,
           headerRight: () => (
             <Pressable onPress={() => router.push('/profile')} style={{ marginRight: 16 }}>
-              <User color={colors.text} size={24} />
+              <User color={colors.yellow} size={24} />
             </Pressable>
           ),
         }}
@@ -30,7 +30,7 @@ export default function AppLayout() {
         options={{
           title: 'My Profile',
           headerStyle: { backgroundColor: colors.background },
-          headerTitleStyle: { ...typography.h2 },
+          headerTitleStyle: { ...typography.h3 },
           headerShadowVisible: false,
           headerRight: () => (
             <Pressable onPress={logout} style={{ marginRight: 16 }}>
@@ -43,11 +43,11 @@ export default function AppLayout() {
       <Stack.Screen
         name="products/[id]"
         options={{
-          title: 'Product Details',
+          title: 'Product detail',
           headerBackTitle: 'Back',
-          headerTintColor: colors.secondary,
+          headerTintColor: colors.yellow,
           headerStyle: { backgroundColor: colors.background },
-          headerTitleStyle: { ...typography.h2 },
+          headerTitleStyle: { ...typography.h3 },
           headerShadowVisible: false,
         }}
       />
@@ -56,8 +56,9 @@ export default function AppLayout() {
         options={{
           title: 'Add New Product',
           presentation: 'modal',
+          headerTintColor: colors.yellow,
           headerStyle: { backgroundColor: colors.background },
-          headerTitleStyle: { ...typography.h2 },
+          headerTitleStyle: { ...typography.h3 },
           headerShadowVisible: false,
         }}
       />

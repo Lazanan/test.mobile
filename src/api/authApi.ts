@@ -1,15 +1,6 @@
-// import bcrypt from 'bcryptjs';
 import { usersDB, UserRecord } from '../data/users';
 import { UserDTO } from '../dtos/UserDTO';
 
-// =================================================================================
-// == AVERTISSEMENT PROFESSIONNEL                                                 ==
-// == Ce code est fourni car il a été demandé explicitement.                      ==
-// == Dans un projet réel, BCRYPT NE DOIT JAMAIS être exécuté côté client (mobile).==
-// == 1. C'est une faille de sécurité.                                            ==
-// == 2. Cela gèle l'application et crée une expérience utilisateur terrible.     ==
-// == La bonne pratique est de faire le hachage sur un serveur distant (backend). ==
-// =================================================================================
 
 const login = (email: string, password: string): Promise<{ token: string; user: UserDTO }> => {
   return new Promise((resolve, reject) => {

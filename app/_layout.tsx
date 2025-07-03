@@ -1,11 +1,13 @@
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { AuthProvider} from '../src/contexts/AuthContext';
 import { useAuth } from '@/src/hooks/useAuth';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { ActivityIndicator, View } from 'react-native';
 import { colors } from '../src/theme/colors';
+
+import { productApi } from '@/src/api/productApi';
 
 // Empêcher le splash screen de se cacher automatiquement
 SplashScreen.preventAutoHideAsync();
@@ -14,6 +16,8 @@ const InitialLayout = () => {
   const { token, isLoading: isAuthLoading } = useAuth();
   const segments = useSegments();
   const router = useRouter();
+  // On ajoute un état pour suivre l'initialisation des produits
+  const [isDataInitialized, setIsDataInitialized] = useState(false);
 
   // Charger les polices personnalisées
   const [fontsLoaded, fontError] = useFonts({
@@ -25,11 +29,18 @@ const InitialLayout = () => {
   });
 
   useEffect(() => {
+    // On lance l'initialisation des données au montage du composant
+    productApi.initialize().then(() => {
+      setIsDataInitialized(true);
+    });
+  }, []);
+
+  useEffect(() => {
     // Si il y a une erreur de chargement de police, on l'affiche
     if (fontError) throw fontError;
 
     // On attend que les polices soient chargées et que l'authentification soit vérifiée
-    if (fontsLoaded && !isAuthLoading) {
+    if (fontsLoaded && !isAuthLoading && isDataInitialized) {
       SplashScreen.hideAsync();
 
       const inAuthGroup = segments[0] === '(auth)';
@@ -41,10 +52,10 @@ const InitialLayout = () => {
         router.replace('/');
       }
     }
-  }, [fontsLoaded, fontError, isAuthLoading, token, segments]);
+  }, [fontsLoaded, fontError, isAuthLoading, isDataInitialized, token, segments]);
 
   // Afficher un indicateur de chargement tant que tout n'est pas prêt
-  if (!fontsLoaded || isAuthLoading) {
+  if (!fontsLoaded || isAuthLoading || !isDataInitialized) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>
         <ActivityIndicator size="large" color={colors.primary} />

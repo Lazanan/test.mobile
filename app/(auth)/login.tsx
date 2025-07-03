@@ -6,7 +6,7 @@ import { StyledInput } from '../../src/components/StyledInput';
 import { useAuth } from '../../src/hooks/useAuth';
 import { typography, colors, spacing } from '../../src/theme';
 import { Mail, Lock } from 'lucide-react-native';
-import { Link, router } from 'expo-router';
+import { Link } from 'expo-router';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('test@example.com');
@@ -18,8 +18,7 @@ export default function LoginScreen() {
     setIsLoading(true);
     try {
       await login(email, password);
-      // redirection vers le product list
-      router.replace("/");
+      // redirection automatique vers le product list gerer par le layout racine 
     } catch (error: any) {
       Alert.alert('Erreur de connexion', error.message || 'Une erreur est survenue.');
     } finally {
@@ -31,7 +30,7 @@ export default function LoginScreen() {
     <Screen style={styles.container}>
       <View>
         <Text style={styles.title}>Welcome Back.</Text>
-        <Text style={styles.subtitle}>Log in to access your product catalog.</Text>
+        <Text style={styles.subtitle}>Log in to access the product catalog.</Text>
       </View>
 
       <View style={styles.formContainer}>
@@ -42,6 +41,7 @@ export default function LoginScreen() {
           keyboardType="email-address"
           autoCapitalize="none"
           leftIcon={<Mail color={colors.text} size={20} />}
+          label="Email"
         />
         <StyledInput
           placeholder="Password"
@@ -49,6 +49,7 @@ export default function LoginScreen() {
           onChangeText={setPassword}
           secureTextEntry
           leftIcon={<Lock color={colors.text} size={20} />}
+          label="Password"
         />
         <StyledButton title="Log In Securely" onPress={handleLogin} loading={isLoading} disabled={isLoading} />
       </View>

@@ -8,19 +8,22 @@ import { typography } from '../theme/typography';
 interface StyledInputProps extends TextInputProps {
   leftIcon?: React.ReactNode;
   error?: string;
+  label?: string
 }
 
-export const StyledInput: React.FC<StyledInputProps> = ({ leftIcon, error, style, ...props }) => {
+export const StyledInput: React.FC<StyledInputProps> = ({ leftIcon, error, style, label, ...props }) => {
   return (
     <View>
+      <View style={styles.labelContainer}>
+        {leftIcon && <>{leftIcon}</>}
+        <Text style={styles.label}>{label}</Text>
+      </View>
       <View style={[styles.container, error ? styles.errorBorder : {}]}>
-        {leftIcon && <View style={styles.iconContainer}>{leftIcon}</View>}
         <TextInput
           style={[typography.body, styles.input, style]}
-          placeholderTextColor={colors.text + '80'} // Noir avec 50% d'opacité
+          placeholderTextColor={colors.black + '80'} // Noir avec 50% d'opacité
           {...props}
         />
-        <View style={styles.shadow} />
       </View>
       {error && <Text style={styles.errorText}>{error}</Text>}
     </View>
@@ -32,24 +35,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.white,
-    borderWidth: 2,
-    borderColor: colors.border,
     height: 52, // Hauteur fixe pour aligner avec les boutons
-  },
-  shadow: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: colors.border,
-    top: 4,
-    left: 4,
-    zIndex: -1,
+    borderRadius: 12,
+    color: colors.black,
   },
   iconContainer: {
     paddingLeft: spacing.md,
+    color: 'black',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   input: {
     flex: 1,
     paddingHorizontal: spacing.md,
-    color: colors.text,
+    paddingVertical: spacing.md,
+    color: colors.black,
   },
   errorBorder: {
     borderColor: colors.accent,
@@ -60,4 +61,16 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
     marginLeft: spacing.xs,
   },
+  labelContainer:{
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    gap: 4,
+    marginBottom: 8,
+  },
+  label: {
+    color: colors.white,
+    fontSize: 18,
+  }
 });

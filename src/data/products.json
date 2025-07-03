@@ -198,5 +198,155 @@
     "category": "Électronique",
     "vendeurs": "OnePlus",
     "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAfqYzySU75NsDblIB-gZxlFC5g9rkGhDYhA&s"
+  },
+  {
+    "id": "26",
+    "name": "T-Shirt 'Essentiel' en Coton Bio",
+    "description": "Un classique intemporel. Ce t-shirt blanc en coton biologique ultra-doux offre un confort exceptionnel et une coupe parfaite. La base de toute garde-robe.",
+    "price": 35.00,
+    "stock": 120,
+    "category": "Vêtement",
+    "vendeurs": "Atelier Coton",
+    "image": "https://i.pinimg.com/736x/c9/02/d9/c902d946fe8a98de81db675067a8ac89.jpg"
+  },
+  {
+    "id": "27",
+    "name": "Jean Droit '90s Vintage'",
+    "description": "Inspiré des années 90, ce jean droit à taille haute sculpte la silhouette. Son délavage vintage authentique lui donne un caractère unique.",
+    "price": 89.90,
+    "stock": 75,
+    "category": "Vêtement",
+    "vendeurs": "Denim Revived",
+    "image": "https://www.rokit.co.uk/cdn/shop/files/WOCJEA61416V_1.jpg?v=1722135553"
+  },
+  {
+    "id": "28",
+    "name": "Robe Midi 'Florale' en Viscose",
+    "description": "Légère et fluide, cette robe midi est parfaite pour les journées ensoleillées. Son imprimé floral délicat et sa coupe flatteuse en font une pièce élégante et confortable.",
+    "price": 75.00,
+    "stock": 50,
+    "category": "Vêtement",
+    "vendeurs": "Jardin Secret",
+    "image": "https://i.pinimg.com/736x/22/53/4e/22534e4a36ef33d8e67d64ea1387927d.jpg"
+  },
+  {
+    "id": "29",
+    "name": "Sweat à Capuche 'Confort' Oversize",
+    "description": "Le compagnon idéal pour vos moments de détente. Confectionné dans un molleton épais et doux, sa coupe oversize offre un confort absolu et un style décontracté.",
+    "price": 65.50,
+    "stock": 90,
+    "category": "Vêtement",
+    "vendeurs": "Urban Softwear",
+    "image": "https://i.pinimg.com/736x/fe/f8/9e/fef89e83100fa116ba4864b74e5cbc8c.jpg"
+  },
+  {
+    "id": "30",
+    "name": "Trench-Coat 'Parisien' Beige",
+    "description": "Une pièce iconique et intemporelle. Ce trench-coat à la coupe classique vous protégera avec élégance de la pluie et du vent de mi-saison. Un must-have.",
+    "price": 149.00,
+    "stock": 40,
+    "category": "Vêtement",
+    "vendeurs": "La Garde-Robe",
+    "image": "https://i.pinimg.com/736x/63/ae/73/63ae73b370347acbcaa1ea1e9a9d9344.jpg"
+  },
+  {
+    "id": "31",
+    "name": "Collier 'Aura' à Maillons Dorés",
+    "description": "Un collier délicat plaqué or 18 carats, parfait pour être porté seul ou superposé. Ses maillons fins captent la lumière pour un éclat subtil.",
+    "price": 49.00,
+    "stock": 85,
+    "category": "Bijoux",
+    "vendeurs": "Or & Lumière",
+    "image": "https://i.pinimg.com/736x/01/1f/56/011f56a82713673f05a88ed71db8c3b1.jpg"
+  },
+  {
+    "id": "32",
+    "name": "Créoles 'Soleil' Texturées",
+    "description": "Ces créoles en argent sterling ont une finition martelée unique qui rappelle les rayons du soleil. Un bijou artisanal qui ne passera pas inaperçu.",
+    "price": 39.99,
+    "stock": 65,
+    "category": "Bijoux",
+    "vendeurs": "Artisan Bijoutier",
+    "image": "https://i.pinimg.com/736x/1c/1e/07/1c1e0737ccd8da710c76f8fdd5d04081.jpg"
+  },
+  {
+    "id": "33",
+    "name": "Bague 'Sceau' Personnalisable",
+    "description": "Une chevalière d'inspiration vintage au design épuré. Faites-y graver une initiale pour un bijou personnel et plein de sens. En argent 925.",
+    "price": 59.00,
+    "stock": 55,
+    "category": "Bijoux",
+    "vendeurs": "Monogramme & Co",
+    "image": "https://i.pinimg.com/736x/e4/77/ac/e477acc47197d154d7fba94a4a32b74c.jpg"
+  },
+  {
+    "id": "34",
+    "name": "Bracelet 'Constellation' avec Zircons",
+    "description": "Fin et délicat, ce bracelet représente une constellation parsemée de minuscules zircons brillants. Un bijou poétique à porter au quotidien.",
+    "price": 45.00,
+    "stock": 100,
+    "category": "Bijoux",
+    "vendeurs": "Ciel Étoilé",
+    "image": "https://i.pinimg.com/736x/ae/3d/b4/ae3db4f8c3be055f11133afb9bdd7627.jpg"
+  },
+  {
+    "id": "35",
+    "name": "Chaîne de Cheville 'Océan' Fine",
+    "description": "Une chaîne de cheville minimaliste en argent, parfaite pour l'été. Sa finesse la rend discrète et élégante, comme une vaguelette sur la peau.",
+    "price": 29.50,
+    "stock": 70,
+    "category": "Bijoux",
+    "vendeurs": "Vague d'Argent",
+    "image": "https://i.pinimg.com/736x/c6/06/05/c606056a84a756753c3e8efca32ea28b.jpg"
+  },
+  {
+    "id": "36",
+    "name": "L'Étranger - Albert Camus",
+    "description": "Un monument de la littérature du 20e siècle. Suivez le parcours de Meursault, un homme indifférent au monde qui l'entoure, jusqu'à l'absurdité de sa condition.",
+    "price": 7.90,
+    "stock": 200,
+    "category": "Livre",
+    "vendeurs": "Librairie Gallimard",
+    "image": "https://i.pinimg.com/736x/3a/ec/8f/3aec8fe7b776713488a651327b2b1dc2.jpg"
+  },
+  {
+    "id": "37",
+    "name": "Le Seigneur des Anneaux - J.R.R. Tolkien",
+    "description": "L'intégrale de l'épopée fantastique qui a défini un genre. Un voyage inoubliable en Terre du Milieu pour détruire l'Anneau Unique. Édition illustrée.",
+    "price": 32.00,
+    "stock": 80,
+    "category": "Livre",
+    "vendeurs": "La Comté Livres",
+    "image": "https://i.pinimg.com/736x/1c/32/16/1c321696f43ce4b7f6fd54396585c3b0.jpg"
+  },
+  {
+    "id": "38",
+    "name": "Ainsi parlait Zarathoustra - F. Nietzsche",
+    "description": "Un poème philosophique majeur sur le dépassement de soi, la volonté de puissance et l'Éternel Retour. Une lecture exigeante mais transformatrice.",
+    "price": 9.50,
+    "stock": 60,
+    "category": "Livre",
+    "vendeurs": "Le Penseur",
+    "image": "https://i.pinimg.com/736x/41/c0/53/41c05395f195cddeb86f06b02ca86bf0.jpg"
+  },
+  {
+    "id": "39",
+    "name": "Kafka sur le rivage - H. Murakami",
+    "description": "Un chef-d'œuvre de réalisme magique où les destins d'un adolescent en fuite et d'un vieil homme simplet s'entremêlent. Surréaliste et captivant.",
+    "price": 11.80,
+    "stock": 95,
+    "category": "Livre",
+    "vendeurs": "Sakura Books",
+    "image": "https://i.pinimg.com/736x/ed/d4/0f/edd40ffb94a92a00f129f198677af9c4.jpg"
+  },
+  {
+    "id": "40",
+    "name": "1984 - George Orwell",
+    "description": "La dystopie ultime. Dans un monde où Big Brother vous regarde, la pensée elle-même est un crime. Un roman d'une pertinence effrayante.",
+    "price": 8.90,
+    "stock": 250,
+    "category": "Livre",
+    "vendeurs": "La Cité des Mots",
+    "image": "https://i.pinimg.com/736x/f5/ae/3e/f5ae3ec6da101623826bd8c1d0be19cc.jpg"
   }
 ]
