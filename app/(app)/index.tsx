@@ -4,7 +4,7 @@ import { Screen } from '../../src/components/Screen';
 import { Card } from '../../src/components/Card';
 import { productApi } from '../../src/api/productApi';
 import { ProductDTO } from '../../src/dtos/ProductDTO';
-import { useRouter, useFocusEffect, Href } from 'expo-router'; // <-- Importer Href
+import { useRouter, useFocusEffect, Href } from 'expo-router'; 
 import { Plus } from 'lucide-react-native';
 import { colors, spacing } from '../../src/theme';
 import { LoadingIndicator } from '../../src/components/LoadingIndicator';
@@ -38,7 +38,6 @@ export default function ProductListScreen() {
   }
 
   const handleProductPress = (id: string) => {
-    // CORRECTION ICI: On caste la chaîne en type Href
     router.push(`/products/${id}` as Href);
   };
   
