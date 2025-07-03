@@ -18,8 +18,8 @@ export default function LoginScreen() {
     setIsLoading(true);
     try {
       await login(email, password);
+      // redirection vers le product list
       router.replace("/");
-      // La redirection est automatique grâce au Root Layout
     } catch (error: any) {
       Alert.alert('Erreur de connexion', error.message || 'Une erreur est survenue.');
     } finally {
