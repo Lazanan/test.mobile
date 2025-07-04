@@ -10,6 +10,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   signup: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
+   updateUser: (updatedData: Partial<UserDTO>) => Promise<void>; 
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -60,8 +61,21 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     await storage.removeUser();
   };
 
+  const updateUser = async (updatedData: Partial<UserDTO>) => {
+    if (!user) throw new Error("Aucun utilisateur à mettre à jour.");
+
+    // Dans une vraie app, on appellerait l'API ici : await userApi.update(user.id, updatedData);
+    
+    // Pour la simulation, on met à jour l'état local et on persiste dans AsyncStorage
+    const newUser = { ...user, ...updatedData };
+    setUser(newUser);
+    await storage.storeUser(newUser); // Persister les changements
+    console.log("User updated in context:", newUser);
+  };
+
+
   return (
-    <AuthContext.Provider value={{ user, token, isLoading, login, signup, logout }}>
+    <AuthContext.Provider value={{ user, token, isLoading, login, signup, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

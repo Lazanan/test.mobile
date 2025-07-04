@@ -11,7 +11,7 @@ export const usersDB: UserRecord[] = [
   {
     id: "1",
     email: "test@example.com",
-    name: "John Doe",
+    name: "Daniel",
     passwordHash: "password123"
   },
   {

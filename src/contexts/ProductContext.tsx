@@ -37,7 +37,7 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({ children })
     loadProducts();
   }, [loadProducts]);
 
-  // FONCTIONS CRUD QUI MODIFIENT L'API ET L'ÉTAT LOCAL
+  // FONCTIONS QUI MODIFIENT L'API ET L'ÉTAT LOCAL
   
   const addProduct = async (productData: Omit<ProductDTO, 'id'>) => {
     const newProduct = await productApi.addProduct(productData);
