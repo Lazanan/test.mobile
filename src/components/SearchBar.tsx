@@ -11,7 +11,7 @@ export const SearchBar: React.FC<SearchBarProps> = (props) => {
     <View style={styles.container}>
       {/* L'icône est maintenant un élément flottant */}
       <View style={styles.iconContainer}>
-        <Search size={20} color={colors.blue} strokeWidth={3}/>
+        <Search size={20} color={colors.yellow} strokeWidth={3}/>
       </View>
 
       <TextInput
