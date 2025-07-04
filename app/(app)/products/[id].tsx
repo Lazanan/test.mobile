@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { View, Text, StyleSheet, Image, ScrollView, Alert } from "react-native";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter, Href, useFocusEffect } from "expo-router";
 import { Screen } from "../../../src/components/Screen";
 import { productApi } from "../../../src/api/productApi";
 import { ProductDTO } from "../../../src/dtos/ProductDTO";
@@ -9,38 +9,43 @@ import { typography, colors, spacing } from "../../../src/theme";
 import { Tag, Package, User, DollarSign } from "lucide-react-native";
 import { StyledButton } from "../../../src/components/StyledButton";
 
+import { useProducts } from '@/src/hooks/useProducts';
+
 
 export default function ProductDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const [product, setProduct] = useState<ProductDTO | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    if (id) {
-      const fetchProduct = async () => {
-        setIsLoading(true);
-        const data = await productApi.getById(id);
-        if (data) {
-          setProduct(data);
+  // 1. Récupérer la liste globale et la fonction de suppression depuis le contexte
+  const { products, deleteProduct, isLoading } = useProducts();
+
+  
+   // 3. Utiliser useFocusEffect pour mettre à jour les données chaque fois que l'écran devient visible
+  useFocusEffect(
+    useCallback(() => {
+      if (id && products.length > 0) {
+        // On cherche le produit avec les données les plus à jour depuis le contexte
+        const currentProduct = products.find(p => p.id === id);
+        if (currentProduct) {
+          setProduct(currentProduct);
+        } else {
+          // Si le produit n'est plus dans la liste (ex: supprimé sur un autre appareil)
+          // On redirige l'utilisateur
+          Alert.alert("Produit introuvable", "Ce produit n'existe plus.", [
+            { text: "OK", onPress: () => router.back() }
+          ]);
         }
-        setIsLoading(false);
-      };
-      fetchProduct();
-    }
-  }, [id]);
-
-  if (isLoading) {
+      }
+    }, [id, products]) // Ce hook se redéclenchera si l'ID ou la liste de produits change
+  );
+  
+  if (isLoading || !product) {
     return <LoadingIndicator />;
   }
+  
+  const EditScreenPath = `products/edit/${id}`;
 
-  if (!product) {
-    return (
-      <Screen style={{ justifyContent: "center", alignItems: "center" }}>
-        <Text style={typography.h2}>Produit non trouvé</Text>
-      </Screen>
-    );
-  }
 
   const handleDelete = async() => {
     Alert.alert(
@@ -52,8 +57,8 @@ export default function ProductDetailScreen() {
           text: "Supprimer",
           style: "destructive",
           onPress: async() => {
-            // Ici, appeler l'API de suppression
-            await productApi.deleteProduct(id);
+            // On appelle la fonction de suppression du contexte
+              await deleteProduct(product.id);
             
             console.log(`Deleting product ${product.id}`);
             router.back();
@@ -99,6 +104,7 @@ export default function ProductDetailScreen() {
             title="Modifier"
             onPress={() => {
               /* Navigation vers l'écran de modification */
+              router.push(EditScreenPath as Href);
             }}
             variant="secondary"
           />

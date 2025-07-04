@@ -9,31 +9,22 @@ import { Plus } from 'lucide-react-native';
 import { colors, spacing } from '../../src/theme';
 import { LoadingIndicator } from '../../src/components/LoadingIndicator';
 import { MasonryFlashList } from '@shopify/flash-list';
+import { useProducts } from '@/src/hooks/useProducts';
+import { RefreshControl } from 'react-native';
 
 export default function ProductListScreen() {
-  const [products, setProducts] = useState<ProductDTO[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // On récupère l'état directement depuis le contexte !
+  const { products, isLoading, loadProducts } = useProducts();
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const router = useRouter();
 
-  useFocusEffect(
-    useCallback(() => {
-      const fetchProducts = async () => {
-        setIsLoading(true);
-        try {
-          // Pour un meilleur effet masonry, mélangeons les données
-          const data = await productApi.getAll();
-          setProducts(data.sort(() => Math.random() - 0.5));
-        } catch (error) {
-          console.error("Failed to fetch products:", error);
-        } finally {
-          setIsLoading(false);
-        }
-      };
-      fetchProducts();
-    }, [])
-  );
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await loadProducts();
+    setIsRefreshing(false);
+  }
 
-  if (isLoading) {
+  if (isLoading && products.length === 0) {
     return <LoadingIndicator />;
   }
 
@@ -47,17 +38,20 @@ export default function ProductListScreen() {
 
   return (
     <Screen style={{ paddingHorizontal: spacing.sm }}>
-      <MasonryFlashList
-        data={products}
-        keyExtractor={(item) => item.id}
-        numColumns={2}
-        renderItem={({ item }) => (
-          <Card product={item} onPress={() => handleProductPress(item.id)} />
-        )}
-        estimatedItemSize={225}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 100 }}
-      />
+      <View style={styles.flashlistContainer}>
+        <MasonryFlashList
+          data={products}
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh}/>}
+          keyExtractor={(item) => item.id}
+          numColumns={2}
+          renderItem={({ item }) => (
+            <Card product={item} onPress={() => handleProductPress(item.id)} />
+          )}
+          estimatedItemSize={225}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 100 }}
+        />
+      </View>
       <Pressable style={styles.fab} onPress={handleAddPress}>
         <View style={styles.fabShadow} />
         <Plus color={colors.white} size={32} />
@@ -88,4 +82,8 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     zIndex: -1,
   },
+  flashlistContainer: {
+    width: '100%',
+    flex: 1
+  }
 });

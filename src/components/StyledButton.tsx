@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    height: 52, // Hauteur fixe pour une meilleure cohérence
+    // height: 52, // Hauteur fixe pour une meilleure cohérence
   },
   shadow: {
     ...StyleSheet.absoluteFillObject,

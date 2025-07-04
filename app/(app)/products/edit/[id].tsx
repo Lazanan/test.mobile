@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, Text, StyleSheet, View } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { Edit } from 'lucide-react-native';
 
 import { Screen } from '@/src/components/Screen';
@@ -10,9 +10,12 @@ import { productApi } from '@/src/api/productApi';
 import { ProductDTO } from '@/src/dtos/ProductDTO';
 import { typography, colors, spacing } from '@/src/theme';
 
+import { useProducts } from '@/src/hooks/useProducts';
+
 export default function EditProductScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
+  const { updateProduct } = useProducts();
 
   const [product, setProduct] = useState<ProductDTO | null>(null);
   const [isLoadingData, setIsLoadingData] = useState(true); // Pour le chargement initial
@@ -44,10 +47,11 @@ export default function EditProductScreen() {
     setIsSubmitting(true);
     try {
       const updateData = { ...data, image: imageUri };
-      await productApi.updateProduct(id, updateData);
+      await updateProduct(id, updateData);
 
       Alert.alert("Succès", "Les modifications ont été enregistrées.");
       router.back();
+      // router.back();
     } catch (error: any) {
       Alert.alert("Erreur", error.message || "Impossible de sauvegarder les modifications.");
     } finally {

@@ -5,19 +5,22 @@ import { Box } from 'lucide-react-native';
 
 import { Screen } from '../../../src/components/Screen';
 import { ProductForm, ProductFormData } from '../../../src/components/ProductForm';
-import { productApi } from '../../../src/api/productApi';
 import { typography, colors, spacing } from '../../../src/theme';
+
+import { useProducts } from '@/src/hooks/useProducts';
 
 export default function AddProductScreen() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+  const { addProduct } = useProducts(); // Récupérer la fonction du contexte
 
   // Cette fonction sera passée au composant ProductForm
   const handleAddProduct = async (data: ProductFormData, imageUri: string) => {
     setIsSubmitting(true);
     try {
       const productData = { ...data, image: imageUri };
-      await productApi.addProduct(productData);
+      // On appelle la fonction du contexte, qui gère l'API ET la mise à jour de l'état
+      await addProduct(productData);
 
       Alert.alert('Succès', `Le produit "${data.name}" a été ajouté.`);
       router.back();
