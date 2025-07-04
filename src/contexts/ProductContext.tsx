@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { ProductDTO } from '../dtos/ProductDTO';
 import { productApi } from '../api/productApi';
+import { shuffleArray } from '../utils/shuffleArray';
 
 interface ProductContextType {
   products: ProductDTO[];
@@ -24,7 +25,7 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({ children })
       setIsLoading(true);
       // L'initialisation depuis AsyncStorage est déjà gérée dans l'API
       const initialProducts = await productApi.getAll();
-      setProducts(initialProducts);
+      setProducts(shuffleArray(initialProducts));
     } catch (error) {
       console.error("Failed to load products:", error);
     } finally {

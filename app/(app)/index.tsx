@@ -1,26 +1,30 @@
-import React, { useState, useCallback, useMemo } from "react";
-import { View, Pressable, StyleSheet, Text } from "react-native";
+import React, { useState, useMemo } from "react";
+import {
+  View,
+  Pressable,
+  StyleSheet,
+  Text,
+  RefreshControl,
+  Alert,
+} from "react-native";
 import { Screen } from "../../src/components/Screen";
 import { Card } from "../../src/components/Card";
-import { productApi } from "../../src/api/productApi";
-import { ProductDTO } from "../../src/dtos/ProductDTO";
-import { useRouter, useFocusEffect, Href } from "expo-router";
-import { Filter, Plus } from "lucide-react-native";
+import { useRouter, Href } from "expo-router";
+import { Filter, Plus, LucideListCollapse } from "lucide-react-native";
 import { colors, spacing, typography } from "../../src/theme";
 import { LoadingIndicator } from "../../src/components/LoadingIndicator";
 import { MasonryFlashList } from "@shopify/flash-list";
 import { useProducts } from "@/src/hooks/useProducts";
-import { RefreshControl } from "react-native";
 import { FilterModal, Filters } from "@/src/components/FilterModal";
 import { SearchBar } from "@/src/components/SearchBar";
+import { ProductDTO } from "@/src/dtos/ProductDTO";
+
+const PAGE_SIZE = 10;
 
 export default function ProductListScreen() {
-  // On récupère l'état directement depuis le contexte !
-  const { products, isLoading, loadProducts } = useProducts();
+  const { products, isLoading, loadProducts, deleteProduct } = useProducts();
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const router = useRouter();
-
-  // États pour les contrôles de filtrage
+  const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilters, setActiveFilters] = useState<Filters>({
     categories: [],
@@ -28,35 +32,40 @@ export default function ProductListScreen() {
     price: { min: "", max: "" },
   });
   const [isFilterModalVisible, setFilterModalVisible] = useState(false);
+  const router = useRouter();
 
   const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
-      // Filtre par recherche
-      const searchMatch =
-        searchQuery.length > 0
-          ? product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            product.description
-              .toLowerCase()
-              .includes(searchQuery.toLowerCase())
-          : true;
+    const filtered = products.filter((product) => {
+      const searchMatch = searchQuery
+        ? product.name.toLowerCase().includes(searchQuery.toLowerCase())
+        : true;
 
-      // Filtre par catégorie
       const categoryMatch =
         activeFilters.categories.length > 0
           ? activeFilters.categories.includes(product.category)
           : true;
 
-      // Filtre par vendeur (à ajouter si vous implémentez la section)
-
-      // Filtre par prix
       const minPrice = parseFloat(activeFilters.price.min);
       const maxPrice = parseFloat(activeFilters.price.max);
-      const priceMatchMin = !isNaN(minPrice) ? product.price >= minPrice : true;
-      const priceMatchMax = !isNaN(maxPrice) ? product.price <= maxPrice : true;
+      const priceMatchMin = !isNaN(minPrice)
+        ? parseFloat(product.price.toString()) >= minPrice
+        : true;
+      const priceMatchMax = !isNaN(maxPrice)
+        ? parseFloat(product.price.toString()) <= maxPrice
+        : true;
 
       return searchMatch && categoryMatch && priceMatchMin && priceMatchMax;
     });
+
+    return filtered;
   }, [products, searchQuery, activeFilters]);
+
+  const totalPages = Math.ceil(filteredProducts.length / PAGE_SIZE);
+  const paginatedProducts = useMemo(() => {
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const end = currentPage * PAGE_SIZE;
+    return filteredProducts.slice(start, end);
+  }, [filteredProducts, currentPage]);
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
@@ -64,21 +73,65 @@ export default function ProductListScreen() {
     setIsRefreshing(false);
   };
 
+  const handleApplyFilters = (newFilters: Filters) => {
+    setActiveFilters(newFilters);
+    setCurrentPage(1);
+  };
+
+  const handleAddPress = () => router.push("/products/add");
+
+  const handleDelete = (product: ProductDTO) => {
+    Alert.alert(
+      "Supprimer le produit",
+      `Êtes-vous sûr de vouloir supprimer "${product.name}" ?`,
+      [
+        { text: "Annuler", style: "cancel" },
+        {
+          text: "Supprimer",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await deleteProduct(product.id);
+              Alert.alert("Succès", "Le produit a été supprimé.");
+            } catch (error: any) {
+              Alert.alert(
+                "Erreur",
+                error.message || "Impossible de supprimer le produit."
+              );
+            }
+          },
+        },
+      ]
+    );
+  };
+
   if (isLoading && products.length === 0) {
     return <LoadingIndicator />;
   }
 
-  // Fonctions pour gérer les actions
-  const handleProductPress = (id: string) =>
-    router.push(`/products/${id}` as Href);
-  const handleAddPress = () => router.push("/products/add");
-  const handleApplyFilters = (newFilters: Filters) =>
-    setActiveFilters(newFilters);
-
   return (
     <Screen style={{ paddingHorizontal: spacing.sm }}>
       <View style={styles.flashlistContainer}>
-        {/* Barre de recherche et bouton de filtre */}
+        <View style={styles.topHeader}>
+          <View style={styles.topHeaderContent}>
+            <View>
+              <View style={styles.title}>
+                <LucideListCollapse size={32} color={colors.yellow} />
+                <Text style={styles.titleStyle}>Listes des Produits</Text>
+              </View>
+              <Text style={styles.subtitle}>
+                Parcourez notre sélection exclusive
+              </Text>
+            </View>
+
+            <Pressable style={styles.fab} onPress={handleAddPress}>
+              <Plus color={colors.yellow} size={36} />
+            </Pressable>
+          </View>
+
+          <View style={styles.separator} />
+        </View>
+
         <View style={styles.header}>
           <SearchBar value={searchQuery} onChangeText={setSearchQuery} />
           <Pressable
@@ -89,26 +142,84 @@ export default function ProductListScreen() {
           </Pressable>
         </View>
 
-        {/* Liste des produits filtrés */}
-        {filteredProducts.length > 0 ? (
-          <MasonryFlashList
-            data={filteredProducts}
-            refreshControl={
-              <RefreshControl
-                refreshing={isRefreshing}
-                onRefresh={handleRefresh}
-              />
-            }
-            keyExtractor={(item) => item.id}
-            numColumns={2}
-            renderItem={({ item }) => (
-              <Card
-                product={item}
-                onPress={() => handleProductPress(item.id)}
-              />
-            )}
-            estimatedItemSize={225}
-          />
+        {paginatedProducts.length > 0 ? (
+          <>
+            <MasonryFlashList
+              data={paginatedProducts}
+              keyExtractor={(item) => item.id}
+              numColumns={2}
+              estimatedItemSize={225}
+              refreshControl={
+                <RefreshControl
+                  refreshing={isRefreshing}
+                  onRefresh={handleRefresh}
+                />
+              }
+              renderItem={({ item }) => (
+                <Card
+                  product={item}
+                  onPress={() => router.push(`/products/${item.id}` as Href)}
+                  // Passer les fonctions d'action à la carte
+                  onEdit={() =>
+                    router.push(`/products/edit/${item.id}` as Href)
+                  }
+                  onDelete={() => handleDelete(item)}
+                />
+              )}
+            />
+
+            {/* PAGINATION BUTTONS */}
+            <View style={styles.paginationContainer}>
+              <Pressable
+                style={[
+                  styles.pageButton,
+                  currentPage === 1 && styles.disabledButton,
+                ]}
+                onPress={() =>
+                  currentPage > 1 && setCurrentPage(currentPage - 1)
+                }
+                disabled={currentPage === 1}
+              >
+                <Text style={styles.pageButtonText}>Prev</Text>
+              </Pressable>
+
+              {Array.from({ length: totalPages }, (_, index) => {
+                const pageNum = index + 1;
+                return (
+                  <Pressable
+                    key={pageNum}
+                    style={[
+                      styles.pageNumber,
+                      pageNum === currentPage && styles.activePage,
+                    ]}
+                    onPress={() => setCurrentPage(pageNum)}
+                  >
+                    <Text
+                      style={[
+                        styles.pageNumberText,
+                        pageNum === currentPage && styles.activePageText,
+                      ]}
+                    >
+                      {pageNum}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+
+              <Pressable
+                style={[
+                  styles.pageButton,
+                  currentPage === totalPages && styles.disabledButton,
+                ]}
+                onPress={() =>
+                  currentPage < totalPages && setCurrentPage(currentPage + 1)
+                }
+                disabled={currentPage === totalPages}
+              >
+                <Text style={styles.pageButtonText}>Next</Text>
+              </Pressable>
+            </View>
+          </>
         ) : (
           <View style={styles.noResultsContainer}>
             <Text style={styles.noResultsText}>
@@ -118,7 +229,6 @@ export default function ProductListScreen() {
         )}
       </View>
 
-      {/* Modale de filtres */}
       <FilterModal
         visible={isFilterModalVisible}
         onClose={() => setFilterModalVisible(false)}
@@ -126,47 +236,20 @@ export default function ProductListScreen() {
         products={products}
         initialFilters={activeFilters}
       />
-
-      <Pressable style={styles.fab} onPress={handleAddPress}>
-        <View style={styles.fabShadow} />
-        <Plus color={colors.white} size={32} />
-      </Pressable>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   fab: {
-    position: "absolute",
-    bottom: spacing.lg,
-    right: spacing.lg,
     width: 60,
     height: 60,
-    borderRadius: 30,
-    backgroundColor: colors.secondary,
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 2,
-    borderColor: colors.border,
-  },
-  fabShadow: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: colors.border,
-    top: 3,
-    left: 3,
-    borderRadius: 30,
-    zIndex: -1,
   },
   flashlistContainer: {
     width: "100%",
     flex: 1,
-  },
-  safeArea: { flex: 1, backgroundColor: "transparent" },
-  container: {
-    flex: 1,
-    paddingHorizontal: spacing.sm,
-    paddingTop: spacing.sm,
-    gap: spacing.md,
   },
   header: {
     flexDirection: "row",
@@ -176,15 +259,99 @@ const styles = StyleSheet.create({
   },
   filterButton: {
     padding: spacing.sm,
-    backgroundColor: colors.background,
+    backgroundColor: colors.blue,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: colors.blue,
   },
   noResultsContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
-  noResultsText: { ...typography.h3, color: colors.yellow },
+  noResultsText: {
+    ...typography.h3,
+    color: colors.yellow,
+    textAlign: 'center',
+  },
+  paginationContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    flexWrap: "wrap",
+    marginVertical: 20,
+    gap: 8,
+  },
+  pageButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 6,
+    backgroundColor: colors.yellow,
+  },
+  pageButtonText: {
+    color: colors.background,
+    fontWeight: "bold",
+  },
+  pageNumber: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 6,
+    backgroundColor: colors.background,
+    borderWidth: 1,
+    borderColor: colors.blue,
+  },
+  activePage: {
+    backgroundColor: colors.blue,
+  },
+  activePageText: {
+    color: colors.white,
+    fontWeight: "bold",
+  },
+  pageNumberText: {
+    color: colors.text,
+  },
+  disabledButton: {
+    backgroundColor: colors.disabled ?? "#ccc",
+    opacity: 0.6,
+  },
+  topHeader: {
+    display: "flex",
+    alignItems: "center",
+    width: "100%",
+    marginHorizontal: "auto",
+  },
+  topHeaderContent: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    alignItems: "center",
+  },
+
+  title: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.sm,
+  },
+  titleStyle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: colors.yellow,
+  },
+
+  subtitle: {
+    fontSize: 14,
+    color: colors.white,
+    marginTop: 4,
+    opacity: 0.8,
+  },
+
+  separator: {
+    height: 1,
+    width: "98%",
+    backgroundColor: colors.primary,
+    marginVertical: spacing.md,
+    borderRadius: 1,
+    marginHorizontal: "auto",
+  },
 });

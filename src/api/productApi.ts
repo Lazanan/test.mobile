@@ -62,6 +62,8 @@ class ProductAPI {
   // Les méthodes CRUD modifient le tableau en mémoire PUIS persistent les changements.
   
   public async getAll(): Promise<ProductDTO[]> {
+    console.log("API: Fetching ALL products for client-side filtering/pagination...");
+    await new Promise(resolve => setTimeout(resolve, 800));
     return [...this.products];
   }
 
@@ -99,6 +101,7 @@ class ProductAPI {
     
     await this.persist();
   }
+
 }
 
 export const productApi = ProductAPI.getInstance();

@@ -19,6 +19,9 @@ const InitialLayout = () => {
   // On ajoute un état pour suivre l'initialisation des produits
   const [isDataInitialized, setIsDataInitialized] = useState(false);
 
+  // On garde un état pour savoir si l'application est "prête"
+  const [appIsReady, setAppIsReady] = useState(false);
+
   // Charger les polices personnalisées
   const [fontsLoaded, fontError] = useFonts({
     'Lexend-Bold': require('../assets/fonts/Lexend-Bold.ttf'),
@@ -32,6 +35,8 @@ const InitialLayout = () => {
     // On lance l'initialisation des données au montage du composant
     productApi.initialize().then(() => {
       setIsDataInitialized(true);
+      // Indiquer que l'application est prête
+        setAppIsReady(true);
     });
   }, []);
 
@@ -40,7 +45,7 @@ const InitialLayout = () => {
     if (fontError) throw fontError;
 
     // On attend que les polices soient chargées et que l'authentification soit vérifiée
-    if (fontsLoaded && !isAuthLoading && isDataInitialized) {
+    if (appIsReady && fontsLoaded && !isAuthLoading && isDataInitialized) {
       SplashScreen.hideAsync();
 
       const inAuthGroup = segments[0] === '(auth)';
@@ -52,10 +57,10 @@ const InitialLayout = () => {
         router.replace('/');
       }
     }
-  }, [fontsLoaded, fontError, isAuthLoading, isDataInitialized, token, segments]);
+  }, [appIsReady, fontsLoaded, fontError, isAuthLoading, isDataInitialized, token, segments]);
 
   // Afficher un indicateur de chargement tant que tout n'est pas prêt
-  if (!fontsLoaded || isAuthLoading || !isDataInitialized) {
+  if (!appIsReady || !fontsLoaded || isAuthLoading || !isDataInitialized) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>
         <ActivityIndicator size="large" color={colors.primary} />

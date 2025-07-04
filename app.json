@@ -1,32 +1,32 @@
 {
   "expo": {
-    "name": "food.truck.apk",
-    "slug": "food.truck.apk",
+    "name": "AreaStash",
+    "slug": "AreaStash",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "foodtruckapk",
+    "icon": "./assets/images/global/logo.png",
+    "scheme": "AreaStash",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/splash-icon.png",
+      "image": "./assets/images/global/logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#07143F"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/images/global/logo.png",
+        "backgroundColor": "#07143F"
       },
       "edgeToEdgeEnabled": true
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/global/logo.png"
     },
     "plugins": [
       "expo-router"

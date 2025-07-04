@@ -1,6 +1,6 @@
 import { Stack, useRouter } from "expo-router";
 import React from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import { User, LogOut } from "lucide-react-native";
 import { colors, spacing, typography } from "../../src/theme";
 import { useAuth } from "../../src/hooks/useAuth";
@@ -9,11 +9,10 @@ import { CustomBackButton } from "../../src/components/CustomBackButton"; // <--
 
 export default function AppLayout() {
   const router = useRouter();
-  const { logout } = useAuth();
 
   const defaultScreenOptions = {
     headerStyle: { backgroundColor: colors.blue }, // Pour laisser voir le fond Aurora
-    headerTitleStyle: { ...typography.h2, color: colors.text },
+    headerTitleStyle: { ...typography.h3, color: colors.text },
     headerShadowVisible: false,
     headerTitleAlign: "center" as "center", // Centrer le titre
   };
@@ -26,6 +25,9 @@ export default function AppLayout() {
           name="index"
           options={{
             title: "Acceuil",
+            headerLeft: () =>(
+              <Image source={require('@/assets/images/global/logo.png')} style={styles.logoStyle}/>
+            ),
             headerRight: () => (
               <Pressable
                 onPress={() => router.push("/profile")}
@@ -62,6 +64,7 @@ export default function AppLayout() {
           name="products/add"
           options={{
             title: "Nouveau Produit",
+            headerLeft: () => <CustomBackButton />, // <-- Utilisation du composant
             presentation: "modal",
           }}
         />
@@ -84,9 +87,17 @@ const styles = StyleSheet.create({
   avatar: {
     width: 40,
     height: 40,
-    borderRadius: 50,
-    backgroundColor: colors.white,
+    borderRadius: 100,
+    backgroundColor: colors.blue,
     justifyContent: "center",
     alignItems: "center",
+    borderWidth: 1,
+    borderBlockColor: colors.white,
   },
+  logoStyle: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    marginLeft: spacing.sm,
+  }
 });
