@@ -1,15 +1,32 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, Pressable, Alert, ScrollView } from "react-native";
+import React, { useMemo, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Pressable,
+  Alert,
+  ScrollView,
+} from "react-native";
 import { Screen } from "../../src/components/Screen";
 import { useAuth } from "../../src/hooks/useAuth";
 import { useProducts } from "../../src/hooks/useProducts";
 import { typography, colors, spacing } from "../../src/theme";
-import { User, Mail, Package, Check, Edit3 } from "lucide-react-native";
+import { User, Mail, Package, Check, Edit3, DollarSign } from "lucide-react-native";
 import { StyledButton } from "../../src/components/StyledButton";
 import { LoadingIndicator } from "../../src/components/LoadingIndicator";
+import { formatCurrency } from "@/src/utils/formatter";
 
 // Un composant réutilisable pour les champs éditables
-const EditableField = ({ label, value, onSave }: { label: string, value: string, onSave: (newValue: string) => void }) => {
+const EditableField = ({
+  label,
+  value,
+  onSave,
+}: {
+  label: string;
+  value: string;
+  onSave: (newValue: string) => void;
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentValue, setCurrentValue] = useState(value);
 
@@ -33,28 +50,49 @@ const EditableField = ({ label, value, onSave }: { label: string, value: string,
           <Text style={styles.fieldValue}>{value}</Text>
         )}
         <Pressable onPress={isEditing ? handleSave : () => setIsEditing(true)}>
-          {isEditing ? <Check color={colors.primary} size={22} /> : <Edit3 color={colors.yellow} size={18} />}
+          {isEditing ? (
+            <Check color={colors.primary} size={22} />
+          ) : (
+            <Edit3 color={colors.yellow} size={18} />
+          )}
         </Pressable>
       </View>
     </View>
   );
 };
 
-
 // Le composant principal de l'écran de profil
 export default function ProfileScreen() {
   const { user, updateUser, logout } = useAuth();
-  const { products } = useProducts(); // Pour les statistiques
+  const { products } = useProducts();
 
   if (!user) {
     return <LoadingIndicator />;
   }
-  
-  // Statistique : nombre de produits créés par l'utilisateur (simulation)
-  const userProductCount = products.filter(p => p.vendeur === user.name).length;
 
-  const handleUpdate = async (field: 'name' | 'email', value: string) => {
+  const userStats = useMemo(() => {
+    if (!user?.name) return { productCount: 0, totalStockValue: 0 };
+
+    const userProducts = products.filter((p) => p.vendeur === user.name);
+
+    const productCount = userProducts.length;
+
+    const totalStockValue = userProducts.reduce((total, product) => {
+      return total + product.price * product.stock;
+    }, 0);
+
+    return {
+      productCount,
+      totalStockValue,
+    };
+  }, [products, user.name]);
+
+  const handleUpdate = async (field: "name" | "email", value: string) => {
     try {
+      if (value.trim() === "") {
+        Alert.alert("Erreur", "Le champ ne peut pas être vide.");
+        return;
+      }
       await updateUser({ [field]: value });
       Alert.alert("Succès", "Votre profil a été mis à jour.");
     } catch (error: any) {
@@ -73,25 +111,37 @@ export default function ProfileScreen() {
           <Text style={styles.userName}>{user.name}</Text>
         </View>
 
-        {/* --- Section Statistiques (Bonus) --- */}
+        {/* --- Section Statistiques --- */}
         <View style={styles.statsSection}>
           <View style={styles.statCard}>
             <Package size={28} color={colors.primary} />
-            <Text style={styles.statValue}>{userProductCount}</Text>
-            <Text style={styles.statLabel}>Produits Créés</Text>
+            <Text style={styles.statValue}>{userStats.productCount}</Text>
+            <Text style={styles.statLabel}>Produits en Vente</Text>
           </View>
+
           <View style={styles.statCard}>
-            <Mail size={28} color={colors.secondary} />
-            <Text style={styles.statValue}>BETA</Text>
-            <Text style={styles.statLabel}>Messages</Text>
+            <DollarSign size={28} color={colors.secondary} />
+            {/* Utilisation de la fonction de formatage pour un code plus propre */}
+            <Text style={styles.statValue}>
+              {formatCurrency(userStats.totalStockValue)}
+            </Text>
+            <Text style={styles.statLabel}>Valeur du Stock</Text>
           </View>
         </View>
 
         {/* --- Section Informations et Modification --- */}
         <View style={styles.infoSection}>
           <Text style={styles.sectionTitle}>Mon Profil</Text>
-          <EditableField label="Nom complet" value={user.name} onSave={(newValue) => handleUpdate('name', newValue)} />
-          <EditableField label="Adresse Email" value={user.email} onSave={(newValue) => handleUpdate('email', newValue)} />
+          <EditableField
+            label="Nom complet"
+            value={user.name}
+            onSave={(newValue) => handleUpdate("name", newValue)}
+          />
+          <EditableField
+            label="Adresse Email"
+            value={user.email}
+            onSave={(newValue) => handleUpdate("email", newValue)}
+          />
         </View>
       </ScrollView>
 
@@ -103,30 +153,22 @@ export default function ProfileScreen() {
   );
 }
 
-// --- Styles ---
+// Les styles restent les mêmes
 const styles = StyleSheet.create({
-  screen: {
-    padding: 0, // Le padding sera géré par les conteneurs internes
-  },
-  header: {
-    padding: spacing.lg,
-    alignItems: 'center',
-  },
+  screen: { padding: 0 },
+  header: { padding: spacing.lg, alignItems: "center" },
   avatar: {
     width: 100,
     height: 100,
     borderRadius: 50,
     backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: spacing.md,
   },
-  userName: {
-    ...typography.h1,
-    color: colors.text,
-  },
+  userName: { ...typography.h1, color: colors.text },
   statsSection: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: spacing.md,
     paddingHorizontal: spacing.md,
     marginBottom: spacing.xl,
@@ -137,22 +179,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.blue,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: colors.blue,
-    alignItems: 'center',
+    borderColor: colors.white,
+    alignItems: "center",
     gap: spacing.xs,
   },
-  statValue: {
-    ...typography.h2,
-    color: colors.text,
-  },
-  statLabel: {
-    ...typography.caption,
-    color: colors.white,
-  },
-  infoSection: {
-    paddingHorizontal: spacing.md,
-    gap: spacing.md,
-  },
+  statValue: { ...typography.h2, color: colors.text, textAlign: "center" },
+  statLabel: { ...typography.caption, color: colors.white, opacity: 0.8 },
+  infoSection: { paddingHorizontal: spacing.md, gap: spacing.md },
   sectionTitle: {
     ...typography.h3,
     color: colors.text,
@@ -162,34 +195,31 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: colors.black,
+    borderColor: colors.white,
     padding: spacing.md,
   },
   fieldLabel: {
     ...typography.caption,
-    color: colors.black,
+    color: colors.blue,
     marginBottom: spacing.xs,
   },
   fieldValueContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   fieldValue: {
     ...typography.body,
-    color: colors.text,
-    fontFamily: 'Lexend-Medium',
+    color: colors.black,
+    fontFamily: "Lexend-Medium",
   },
   input: {
     ...typography.body,
-    color: colors.text,
-    fontFamily: 'Lexend-Medium',
+    color: colors.black,
+    fontFamily: "Lexend-Medium",
     flex: 1,
     padding: 0,
     margin: 0,
   },
-  logoutButtonContainer: {
-    padding: spacing.md,
-    marginTop: 'auto', // Pousse le bouton en bas
-  },
+  logoutButtonContainer: { padding: spacing.md, marginTop: "auto" },
 });

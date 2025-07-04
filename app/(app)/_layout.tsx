@@ -17,7 +17,7 @@ export default function AppLayout() {
           name="index"
           options={{
             title: 'Products',
-            headerStyle: { backgroundColor: colors.background },
+            headerStyle: { backgroundColor: colors.blue },
             headerTitleStyle: { ...typography.h3, color: colors.yellow },
             headerShadowVisible: false,
             headerRight: () => (
@@ -31,7 +31,8 @@ export default function AppLayout() {
           name="profile"
           options={{
             title: 'My Profile',
-            headerStyle: { backgroundColor: colors.background },
+            headerStyle: { backgroundColor: colors.blue },
+            headerTintColor: colors.white,
             headerTitleStyle: { ...typography.h3 },
             headerShadowVisible: false,
             headerRight: () => (
@@ -47,8 +48,8 @@ export default function AppLayout() {
           options={{
             title: 'Product detail',
             headerBackTitle: 'Back',
-            headerTintColor: colors.yellow,
-            headerStyle: { backgroundColor: colors.background },
+            headerTintColor: colors.white,
+            headerStyle: { backgroundColor: colors.blue },
             headerTitleStyle: { ...typography.h3 },
             headerShadowVisible: false,
           }}
