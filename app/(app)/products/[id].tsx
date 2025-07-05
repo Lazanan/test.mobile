@@ -46,6 +46,7 @@ export default function ProductDetailScreen() {
   const onDeleteConfirmed = () => {
     if(product) handleDelete(product);
     setModalVisible(false);
+    router.replace('/');
   };
 
   useFocusEffect(
