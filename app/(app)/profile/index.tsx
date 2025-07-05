@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Screen } from "@/src/components/Screen";
@@ -9,10 +9,12 @@ import { formatCurrency } from "@/src/utils/formatter";
 import { EditableField } from "@/src/components/profile/EditableField";
 import { useHandleProfile } from "@/src/hooks/useHandleProfile";
 import { Href, useRouter } from "expo-router";
+import { ConfirmModal } from "@/src/components/global/ConfirmModal";
 
 // Le composant principal de l'écran de profil
 export default function ProfileScreen() {
-  const { user, userStats, logout, handleUpdate } = useHandleProfile();
+  const { user, userStats, handleLogOut, handleUpdate } = useHandleProfile();
+  const [modalVisible, setModalVisible] = useState(false);
   const router = useRouter()
 
   if (!user) {
@@ -74,13 +76,21 @@ export default function ProfileScreen() {
         </View>
       </KeyboardAwareScrollView>
 
-      {/*Bouton de déconnexion*/}
+      {/* Bouton de déconnexion*/}
       {/* <View style={styles.logoutButtonContainer}> */}
-        <Pressable style={styles.logoutStyle} onPress={logout}>
-          {/* <Text style={{ ...typography.caption, fontWeight: 900, fontSize: 16 }}>Se déconnecter</Text> */}
+        <Pressable style={styles.logoutStyle} onPress={() => setModalVisible(true)}>
           <LogOut color={colors.yellow}/>
         </Pressable>
       {/* </View> */}
+
+      <ConfirmModal
+        visible={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        onConfirm={handleLogOut}
+        title="Déconnexion"
+        message="Voulez-vous vraiment vous déconnecter ?"
+      />
+      
     </Screen>
   );
 }

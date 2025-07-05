@@ -14,7 +14,7 @@ export default function AddProductScreen() {
   const router = useRouter();
   const { addProduct } = useProducts();
 
-  // Cette fonction sera passée au composant ProductForm
+  // fonction pour ajout de produit
   const handleAddProduct = async (data: ProductFormData, imageUri: string) => {
     setIsSubmitting(true);
     try {
@@ -35,7 +35,7 @@ export default function AddProductScreen() {
     <Screen>
       <View style={styles.titleContainer}>
         <Box color={colors.blue} />
-        <Text style={styles.title}>Nouveau Produit</Text>
+        <Text style={styles.title}>Ajouter un Produit</Text>
       </View>
       
       {/* formulaire */}

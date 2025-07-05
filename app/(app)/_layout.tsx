@@ -1,7 +1,8 @@
 import { Stack, useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  BackHandler,
   Image,
   Pressable,
   StyleSheet,
@@ -31,6 +32,22 @@ export default function AppLayout() {
     router.back();
     setTimeout(() => setShowSplash(false), 300); // attendre un peu pour éviter flicker
   };
+
+  useEffect(() => {
+    const onHardwareBackPress = () => {
+      onBack();
+      return true; // on gère l'événement
+    };
+
+    const subscription = BackHandler.addEventListener(
+      "hardwareBackPress",
+      onHardwareBackPress
+    );
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   return (
     <ProductProvider>

@@ -37,5 +37,24 @@ export function useHandleProfile() {
     }
   };
 
-  return { user, userStats, logout, handleUpdate};
+  const handleLogOut = () => {
+    Alert.alert(
+    "Déconnexion",
+    "Voulez-vous vraiment vous déconnecter ?",
+    [
+      {
+        text: "Annuler",
+        style: "cancel",
+      },
+      {
+        text: "Déconnexion",
+        style: "destructive",
+        onPress: logout,
+      },
+    ],
+    { cancelable: true }
+  );
+  }
+
+  return { user, userStats, handleLogOut, handleUpdate};
 }
