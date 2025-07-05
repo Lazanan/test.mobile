@@ -7,6 +7,7 @@ import { useAuth } from "../../src/hooks/useAuth";
 import { typography, colors, spacing } from "../../src/theme";
 import { Mail, Lock } from "lucide-react-native";
 import { Link } from "expo-router";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("test@example.com");
@@ -31,53 +32,59 @@ export default function LoginScreen() {
   };
 
   return (
-    <Screen style={styles.container}>
-      <View>
-        <Text style={styles.title}>Bon retour !</Text>
-        <Text style={styles.subtitle}>
-          Connectez-vous pour accéder au catalogue.
-        </Text>
-      </View>
-
-      <View style={styles.formContainer}>
-        <StyledInput
-          placeholder="Adresse e-mail"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-          leftIcon={<Mail color={colors.text} size={20} />}
-          label="E-mail"
-        />
-        <StyledInput
-          placeholder="Mot de passe"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-          leftIcon={<Lock color={colors.text} size={20} />}
-          label="Mot de passe"
-        />
-        <StyledButton
-          title="Se connecter"
-          onPress={handleLogin}
-          loading={isLoading}
-          disabled={isLoading}
-        />
-      </View>
-
-      <Link href="/signup" asChild>
-        <Pressable>
-          <Text style={styles.link}>
-            Vous n’avez pas de compte ?{" "}
-            <Text
-              style={{ fontFamily: "Lexend-Bold", color: colors.secondary }}
-            >
-              Inscrivez-vous
-            </Text>
+    <KeyboardAwareScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      keyboardShouldPersistTaps="handled"
+      enableOnAndroid={true}
+    >
+      <Screen style={styles.container}>
+        <View>
+          <Text style={styles.title}>Bon retour !</Text>
+          <Text style={styles.subtitle}>
+            Connectez-vous pour accéder au catalogue.
           </Text>
-        </Pressable>
-      </Link>
-    </Screen>
+        </View>
+
+        <View style={styles.formContainer}>
+          <StyledInput
+            placeholder="Adresse e-mail"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            leftIcon={<Mail color={colors.text} size={20} />}
+            label="E-mail"
+          />
+          <StyledInput
+            placeholder="Mot de passe"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            leftIcon={<Lock color={colors.text} size={20} />}
+            label="Mot de passe"
+          />
+          <StyledButton
+            title="Se connecter"
+            onPress={handleLogin}
+            loading={isLoading}
+            disabled={isLoading}
+          />
+        </View>
+
+        <Link href="/signup" asChild>
+          <Pressable>
+            <Text style={styles.link}>
+              Vous n’avez pas de compte ?{" "}
+              <Text
+                style={{ fontFamily: "Lexend-Bold", color: colors.secondary }}
+              >
+                Inscrivez-vous
+              </Text>
+            </Text>
+          </Pressable>
+        </Link>
+      </Screen>
+    </KeyboardAwareScrollView>
   );
 }
 

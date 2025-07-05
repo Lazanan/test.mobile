@@ -3,32 +3,40 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Screen } from "@/src/components/global/Screen";
 import { typography, colors, spacing } from "@/src/theme";
-import { User, Package, DollarSign, LogOut, ArrowRight } from "lucide-react-native";
+import {
+  User,
+  Package,
+  DollarSign,
+  LogOut,
+  ArrowRight,
+} from "lucide-react-native";
 import { LoadingIndicator } from "@/src/components/global/LoadingIndicator";
 import { formatCurrency } from "@/src/utils/formatter";
 import { EditableField } from "@/src/components/profile/EditableField";
 import { useHandleProfile } from "@/src/hooks/useHandleProfile";
 import { Href, useRouter } from "expo-router";
 import { ConfirmModal } from "@/src/components/global/ConfirmModal";
+import { useAuth } from "@/src/hooks/useAuth";
 
 // Le composant de l'écran de profil
 export default function ProfileScreen() {
-  const { user, userStats, handleLogOut, handleUpdate } = useHandleProfile();
+  const { user, userStats, handleUpdate } = useHandleProfile();
   const [modalVisible, setModalVisible] = useState(false);
-  const router = useRouter()
+  const { logout } = useAuth();
+  const router = useRouter();
 
   if (!user) {
     return <LoadingIndicator />;
   }
 
   return (
-    <Screen style={styles.screen}>
-      <KeyboardAwareScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
-        keyboardShouldPersistTaps="handled"
-        extraScrollHeight={100}
-        enableOnAndroid={true}
-      >
+    <KeyboardAwareScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      keyboardShouldPersistTaps="handled"
+      extraScrollHeight={150}
+      enableOnAndroid={true}
+    >
+      <Screen style={styles.screen}>
         {/*Section Header*/}
         <View style={styles.header}>
           <View style={styles.avatar}>
@@ -54,9 +62,12 @@ export default function ProfileScreen() {
           </View>
         </View>
 
-        <Pressable style={styles.myProductsLink} onPress={() => router.push(`products/myproducts/${user.id}` as Href)}>
+        <Pressable
+          style={styles.myProductsLink}
+          onPress={() => router.push(`products/myproducts/${user.id}` as Href)}
+        >
           <Text style={styles.myProductsLinkLabel}>Voir Mes Produits</Text>
-          <ArrowRight color={colors.yellow}/>
+          <ArrowRight color={colors.yellow} />
         </Pressable>
 
         {/*Section Informations et Modification*/}
@@ -73,23 +84,25 @@ export default function ProfileScreen() {
             onSave={(newValue) => handleUpdate("email", newValue)}
           />
         </View>
-      </KeyboardAwareScrollView>
 
-      {/* Bouton de déconnexion*/}
-        <Pressable style={styles.logoutStyle} onPress={() => setModalVisible(true)}>
-          <LogOut color={colors.yellow}/>
+        {/* Bouton de déconnexion*/}
+        <Pressable
+          style={styles.logoutStyle}
+          onPress={() => setModalVisible(true)}
+        >
+          <LogOut color={colors.yellow} />
         </Pressable>
 
-      {/* Modal de confirmation */}
-      <ConfirmModal
-        visible={modalVisible}
-        onCancel={() => setModalVisible(false)}
-        onConfirm={handleLogOut}
-        title="Déconnexion"
-        message="Voulez-vous vraiment vous déconnecter ?"
-      />
-      
-    </Screen>
+        {/* Modal de confirmation */}
+        <ConfirmModal
+          visible={modalVisible}
+          onCancel={() => setModalVisible(false)}
+          onConfirm={logout}
+          title="Déconnexion"
+          message="Voulez-vous vraiment vous déconnecter ?"
+        />
+      </Screen>
+    </KeyboardAwareScrollView>
   );
 }
 
@@ -136,19 +149,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   logoutStyle: {
-    position: 'absolute',
+    position: "absolute",
     borderRadius: 8,
     flexDirection: "row",
     flex: 1,
     padding: spacing.md,
-    justifyContent: 'center',
+    justifyContent: "center",
     gap: spacing.md,
     top: 2,
     right: 2,
   },
   myProductsLink: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: spacing.lg,
     paddingHorizontal: spacing.md,
     marginBottom: spacing.lg,
@@ -156,5 +169,5 @@ const styles = StyleSheet.create({
   myProductsLinkLabel: {
     fontSize: 20,
     color: colors.white,
-  }
+  },
 });
