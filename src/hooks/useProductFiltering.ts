@@ -9,10 +9,15 @@ export const useProductFiltering = (
 ) => {
   return useMemo(() => {
     return products.filter((product) => {
-        // condiitions du filter
+        // conditions du filter
       const searchMatch = searchQuery
-        ? product.name.toLowerCase().includes(searchQuery.toLowerCase())
-        : true;
+        ? (product.name.toLowerCase().includes(searchQuery.toLowerCase())
+        || product.category.toLowerCase().includes(searchQuery.toLowerCase())
+        || product.price.toString().toLowerCase().includes(searchQuery.toLowerCase())
+        || product.description?.toLowerCase().includes(searchQuery.toLowerCase())
+        || product.vendeur.toLowerCase().includes(searchQuery.toLowerCase())
+        || product.stock.toString().toLowerCase().includes(searchQuery.toLowerCase())
+      ) : true;
 
       const categoryMatch =
         activeFilters.categories.length > 0

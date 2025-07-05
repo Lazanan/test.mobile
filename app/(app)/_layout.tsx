@@ -46,7 +46,7 @@ export default function AppLayout() {
 
         {/* route profile */}
         <Stack.Screen
-          name="profile"
+          name="profile/index"
           options={{
             title: "Mon Profil",
             headerLeft: () => <CustomBackButton />,

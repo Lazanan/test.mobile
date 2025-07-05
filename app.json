@@ -8,7 +8,7 @@
     "scheme": "AreaStash",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
-    "backgroundColor": "#07143F", 
+    "backgroundColor": "#07143F",
     "splash": {
       "image": "./assets/images/global/logo.png",
       "resizeMode": "contain",
@@ -22,7 +22,8 @@
         "foregroundImage": "./assets/images/global/logo.png",
         "backgroundColor": "#07143F"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.anonymous.AreaStash"
     },
     "web": {
       "bundler": "metro",

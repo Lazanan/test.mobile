@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     height: 52, // Hauteur fixe pour aligner avec les boutons
     borderRadius: 12,
     color: colors.black,
+    minWidth: 100,
   },
   iconContainer: {
     paddingLeft: spacing.md,

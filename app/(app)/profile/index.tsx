@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-import { Screen } from "../../src/components/Screen";
-import { typography, colors, spacing } from "../../src/theme";
+import { Screen } from "@/src/components/Screen";
+import { typography, colors, spacing } from "@/src/theme";
 import { User, Package, DollarSign } from "lucide-react-native";
-import { StyledButton } from "../../src/components/StyledButton";
-import { LoadingIndicator } from "../../src/components/LoadingIndicator";
+import { StyledButton } from "@/src/components/StyledButton";
+import { LoadingIndicator } from "@/src/components/LoadingIndicator";
 import { formatCurrency } from "@/src/utils/formatter";
 import { EditableField } from "@/src/components/profile/EditableField";
 import { useHandleProfile } from "@/src/hooks/useHandleProfile";

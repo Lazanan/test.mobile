@@ -7,10 +7,17 @@ import {
   Pressable,
   ScrollView,
 } from "react-native";
-import { Screen } from "./Screen";
+
 import { StyledButton } from "./StyledButton";
 import { StyledInput } from "./StyledInput";
-import { X } from "lucide-react-native";
+import {
+  X,
+  ListFilterIcon,
+  RotateCcw,
+  Check,
+  LayoutGrid,
+  DollarSign,
+} from "lucide-react-native";
 import { colors, spacing, typography } from "../theme";
 import { ProductDTO } from "../dtos/ProductDTO";
 
@@ -92,7 +99,10 @@ export const FilterModal: React.FC<FilterModalProps> = ({
       <View style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
           <View style={styles.header}>
-            <Text style={styles.title}>Filtres</Text>
+            <View style={styles.headerLeft}>
+              <ListFilterIcon size={50} color={colors.yellow} />
+              <Text style={styles.title}>Filtres</Text>
+            </View>
             <Pressable onPress={onClose}>
               <X size={28} color={colors.text} />
             </Pressable>
@@ -110,11 +120,13 @@ export const FilterModal: React.FC<FilterModalProps> = ({
               ))}
             </View>
 
-            <Text style={styles.sectionTitle}>Prix</Text>
+            <Text style={styles.sectionTitle}>Prix ($)</Text>
             <View style={styles.priceContainer}>
               <StyledInput
-                placeholder="Min"
+                style={{ fontSize: 12, textAlign: "center" }}
+                placeholder="ex : 30"
                 keyboardType="numeric"
+                label="Min"
                 value={tempFilters.price.min}
                 onChangeText={(min) =>
                   setTempFilters({
@@ -124,7 +136,9 @@ export const FilterModal: React.FC<FilterModalProps> = ({
                 }
               />
               <StyledInput
-                placeholder="Max"
+                style={{ fontSize: 12, textAlign: "center" }}
+                placeholder="ex : 100"
+                label="Max"
                 keyboardType="numeric"
                 value={tempFilters.price.max}
                 onChangeText={(max) =>
@@ -140,11 +154,16 @@ export const FilterModal: React.FC<FilterModalProps> = ({
           </ScrollView>
           <View style={styles.footer}>
             <StyledButton
+              icon={<RotateCcw color={colors.white} size={24} />}
               title="Réinitialiser"
               onPress={handleReset}
               variant="secondary"
             />
-            <StyledButton title="Appliquer" onPress={handleApply} />
+            <StyledButton
+              icon={<Check color={colors.black} size={24} />}
+              title="Appliquer"
+              onPress={handleApply}
+            />
           </View>
         </View>
       </View>
@@ -152,7 +171,7 @@ export const FilterModal: React.FC<FilterModalProps> = ({
   );
 };
 
-// Styles pour le modal, utilisant le thème glassmorphism
+// Styles pour le modal
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
@@ -171,6 +190,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: spacing.lg,
+  },
+  headerLeft: {
+    flexDirection: "row",
+    gap: spacing.sm,
+    alignItems: "center",
   },
   title: { ...typography.h1, color: colors.text },
   sectionTitle: {

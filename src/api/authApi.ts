@@ -3,6 +3,7 @@ import { UserDTO } from '../dtos/UserDTO';
 
 
 const login = (email: string, password: string): Promise<{ token: string; user: UserDTO }> => {
+  
   return new Promise((resolve, reject) => {
     setTimeout(() => { // Simule la latence du réseau
       const userRecord = usersDB.find(u => u.email.toLowerCase() === email.toLowerCase());
@@ -10,7 +11,7 @@ const login = (email: string, password: string): Promise<{ token: string; user: 
         return reject(new Error('Email ou mot de passe incorrect.'));
       }
 
-      // Comparaison du mot de passe (opération lente et bloquante)
+      // Comparaison du mot de passe 
       const isPasswordValid = password === userRecord.passwordHash;
       if (!isPasswordValid) {
         return reject(new Error('Email ou mot de passe incorrect.'));
@@ -22,7 +23,7 @@ const login = (email: string, password: string): Promise<{ token: string; user: 
       const token = `fake-jwt-for-${user.id}-${Date.now()}`;
       
       resolve({ token, user });
-    }, 1500); // Latence de 1.5s pour voir l'indicateur de chargement
+    }, 1500); 
   });
 };
 
