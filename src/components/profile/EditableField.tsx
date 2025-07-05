@@ -37,9 +37,9 @@ export const EditableField = ({
             value={currentValue}
             onChangeText={setCurrentValue}
             style={styles.input}
-            autoFocus={true} // <-- AMÉLIORATION UX: Ouvre le clavier et met le focus automatiquement
-            onSubmitEditing={handleSave} // Optionnel: sauvegarde en appuyant sur "Entrée"
-            blurOnSubmit={false} // Garde le clavier ouvert si on soumet
+            autoFocus={true}
+            onSubmitEditing={handleSave} 
+            blurOnSubmit={false} 
           />
         ) : (
           <Text style={styles.fieldValue}>{value}</Text>
@@ -56,7 +56,7 @@ export const EditableField = ({
   );
 };
 
-// ... vos styles pour EditableField restent inchangés
+
 const styles = StyleSheet.create({
   fieldContainer: {
     backgroundColor: colors.white,

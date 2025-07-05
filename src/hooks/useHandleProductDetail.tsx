@@ -10,7 +10,7 @@ export const useHandleProductDetail = () => {
   const [product, setProduct] = useState<ProductDTO | null>(null);
 
   //Récupérer la liste globale et la fonction de suppression depuis le contexte
-  const { products, deleteProduct, isLoading } = useProducts();
+  const { products, deleteProduct } = useProducts();
 
   const fetchProduct = useCallback(() => {
     if (id && products.length > 0) {
@@ -20,7 +20,6 @@ export const useHandleProductDetail = () => {
         setProduct(currentProduct);
       } else {
         // Si le produit n'est pas dans la liste
-        // Rediriger l'utilisateur
         Alert.alert("Produit introuvable", "Ce produit n'existe plus.", [
           { text: "OK", onPress: () => router.back() },
         ]);

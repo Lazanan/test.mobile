@@ -4,9 +4,10 @@ import { useProducts } from "./useProducts";
 import { Alert } from "react-native";
 
 export function useHandleProfile() {
-  const { user, updateUser, logout } = useAuth();
+  const { user, updateUser } = useAuth();
   const { products } = useProducts();
   
+  // recuperer les stats de l'utilisateur
   const userStats = useMemo(() => {
     if (!user?.name) return { productCount: 0, totalStockValue: 0 };
 
@@ -24,6 +25,8 @@ export function useHandleProfile() {
     };
   }, [products, user?.name]);
 
+
+  // gerer les modifications
   const handleUpdate = async (field: "name" | "email", value: string) => {
     try {
       if (value.trim() === "") {
@@ -37,24 +40,5 @@ export function useHandleProfile() {
     }
   };
 
-  const handleLogOut = () => {
-    Alert.alert(
-    "Déconnexion",
-    "Voulez-vous vraiment vous déconnecter ?",
-    [
-      {
-        text: "Annuler",
-        style: "cancel",
-      },
-      {
-        text: "Déconnexion",
-        style: "destructive",
-        onPress: logout,
-      },
-    ],
-    { cancelable: true }
-  );
-  }
-
-  return { user, userStats, handleLogOut, handleUpdate};
+  return { user, userStats, handleUpdate};
 }

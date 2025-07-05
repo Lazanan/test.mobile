@@ -8,14 +8,12 @@ import {
   Modal,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { colors } from "../theme/colors";
-import { spacing } from "../theme/spacing";
-import { typography } from "../theme/typography";
-import { ProductDTO } from "../dtos/ProductDTO";
-import { MoreVertical, X, Edit3Icon, Info, Trash } from "lucide-react-native"; // Importer les icônes nécessaires
+import { colors, spacing, typography } from "@/src/theme";
+import { ProductDTO } from "../../dtos/ProductDTO";
+import { MoreVertical, X, Edit3Icon, Info, Trash } from "lucide-react-native"; 
 import { Href, useRouter } from "expo-router";
 
-// Mettre à jour les props pour accepter les fonctions de modification et de suppression
+// type props
 interface CardProps {
   product: ProductDTO;
   onPress: () => void;
@@ -63,12 +61,14 @@ export const Card: React.FC<CardProps> = ({
         ]}
       >
         <View style={styles.shadow} />
+
+        {/* image du produit */}
         <ImageBackground
           source={{ uri: product.image }}
           style={[styles.container, { height: imageHeight }]}
           imageStyle={styles.image}
         >
-          {/* --- Icône des trois points --- */}
+          {/* Edit button */}
           <Pressable onPress={handleOpenMenu} style={styles.moreButton}>
             <MoreVertical color={colors.white} size={24} />
           </Pressable>
@@ -85,7 +85,7 @@ export const Card: React.FC<CardProps> = ({
         </ImageBackground>
       </Pressable>
 
-      {/* --- Modal pour le menu d'options --- */}
+      {/* Modal pour le menu d'options */}
       <Modal
         visible={isMenuVisible}
         transparent={true}

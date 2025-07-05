@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { Screen } from "@/src/components/Screen";
+import { Screen } from "@/src/components/global/Screen";
 import { typography, colors, spacing } from "@/src/theme";
 import { User, Package, DollarSign, LogOut, ArrowRight } from "lucide-react-native";
-import { LoadingIndicator } from "@/src/components/LoadingIndicator";
+import { LoadingIndicator } from "@/src/components/global/LoadingIndicator";
 import { formatCurrency } from "@/src/utils/formatter";
 import { EditableField } from "@/src/components/profile/EditableField";
 import { useHandleProfile } from "@/src/hooks/useHandleProfile";
 import { Href, useRouter } from "expo-router";
 import { ConfirmModal } from "@/src/components/global/ConfirmModal";
 
-// Le composant principal de l'écran de profil
+// Le composant de l'écran de profil
 export default function ProfileScreen() {
   const { user, userStats, handleLogOut, handleUpdate } = useHandleProfile();
   const [modalVisible, setModalVisible] = useState(false);
@@ -47,7 +47,6 @@ export default function ProfileScreen() {
 
           <View style={styles.statCard}>
             <DollarSign size={28} color={colors.secondary} />
-            {/* Utilisation de la fonction de formatage pour l'argent */}
             <Text style={styles.statValue}>
               {formatCurrency(userStats.totalStockValue)}
             </Text>
@@ -77,12 +76,11 @@ export default function ProfileScreen() {
       </KeyboardAwareScrollView>
 
       {/* Bouton de déconnexion*/}
-      {/* <View style={styles.logoutButtonContainer}> */}
         <Pressable style={styles.logoutStyle} onPress={() => setModalVisible(true)}>
           <LogOut color={colors.yellow}/>
         </Pressable>
-      {/* </View> */}
 
+      {/* Modal de confirmation */}
       <ConfirmModal
         visible={modalVisible}
         onCancel={() => setModalVisible(false)}
@@ -136,12 +134,10 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     marginTop: "auto",
     flexDirection: "row",
-    // width: '100%',
   },
   logoutStyle: {
     position: 'absolute',
     borderRadius: 8,
-    // backgroundColor: colors.yellow,
     flexDirection: "row",
     flex: 1,
     padding: spacing.md,

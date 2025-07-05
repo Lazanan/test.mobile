@@ -1,8 +1,7 @@
-// src/components/ProductPagination.tsx
 import React from "react";
 import { View, Pressable, Text, StyleSheet } from "react-native";
-import { usePagination, DOTS } from "../hooks/usePagination"; // Importer le hook et les ellipses
-import { colors } from "../theme";
+import { usePagination, DOTS } from "@/src/hooks/usePagination";
+import { colors } from "@/src/theme";
 
 type Props = {
   currentPage: number;
@@ -102,7 +101,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between", 
     alignItems: "center",
     marginVertical: 20,
-    paddingHorizontal: 16, // Ajouter un peu d'espace sur les côtés
+    paddingHorizontal: 16, 
   },
   pageButton: {
     paddingHorizontal: 16,
@@ -120,7 +119,7 @@ const styles = StyleSheet.create({
   pageNumber: {
     width: 36,
     height: 36,
-    borderRadius: 18, // Pour un cercle parfait
+    borderRadius: 18, 
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: colors.background,

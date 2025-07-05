@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Filters } from "../components/FilterModal";
+import { Filters } from "../components/global/FilterModal";
 import { ProductDTO } from "../dtos/ProductDTO";
 
 export const useProductFiltering = (

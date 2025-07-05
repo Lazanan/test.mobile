@@ -30,16 +30,14 @@ const InitialLayout = () => {
   });
 
   useEffect(() => {
-    // On lance l'initialisation des données au montage du composant
+    // Initialisation des données au montage du composant
     productApi.initialize().then(() => {
       setIsDataInitialized(true);
-      // Indiquer que l'application est prête
         setAppIsReady(true);
     });
   }, []);
 
   useEffect(() => {
-    // Si il y a une erreur de chargement de police, on l'affiche
     if (fontError) throw fontError;
 
     // On attend que les polices soient chargées et que l'authentification soit vérifiée
@@ -57,7 +55,7 @@ const InitialLayout = () => {
     }
   }, [appIsReady, fontsLoaded, fontError, isAuthLoading, isDataInitialized, token, segments]);
 
-  // Afficher un indicateur de chargement tant que tout n'est pas prêt
+  // rendu loading
   if (!appIsReady || !fontsLoaded || isAuthLoading || !isDataInitialized) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>

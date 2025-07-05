@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Plus, ListMinusIcon } from "lucide-react-native";
-import { colors, spacing } from "../theme";
+import { colors, spacing } from "../../theme";
 
 type Props = {
   onAddPress: () => void;

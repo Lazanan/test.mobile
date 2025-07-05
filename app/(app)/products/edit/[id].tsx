@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 
-import { Screen } from "@/src/components/Screen";
+import { Screen } from "@/src/components/global/Screen";
 import { ProductForm } from "@/src/components/productForm/ProductForm";
-import { LoadingIndicator } from "@/src/components/LoadingIndicator";
+import { LoadingIndicator } from "@/src/components/global/LoadingIndicator";
 
 import { typography, colors, spacing } from "@/src/theme";
 import { Edit } from "lucide-react-native";

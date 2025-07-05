@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as ImagePicker from "expo-image-picker";
 import { z } from "zod";
 
-import { StyledButton } from "@/src/components/StyledButton";
+import { StyledButton } from "@/src/components/global/StyledButton";
 import { Stepper } from "./subComponents/Stepper";
 import { Step1 } from "./subComponents/Step1";
 import { Step2 } from "./subComponents/Step2";
@@ -161,7 +161,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({
             title="Précédent"
             onPress={() => handleNavigation("previous")}
             variant="secondary"
-            // style={styles.navButton}
           />
         )}
         <StyledButton
@@ -174,7 +173,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({
           }
           onPress={() => handleNavigation("next")}
           loading={isLoading && step === totalSteps}
-        //   style={styles.navButton}
         />
       </View>
     </KeyboardAwareScrollView>

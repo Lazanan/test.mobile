@@ -9,26 +9,46 @@ import {
 import { useRouter, Href } from "expo-router";
 import { MasonryFlashList } from "@shopify/flash-list";
 
-import { Screen } from "@/src/components/Screen";
-import { Card } from "@/src/components/Card";
-import { FilterModal } from "@/src/components/FilterModal";
-import { SearchBar } from "@/src/components/SearchBar";
-import { LoadingIndicator } from "@/src/components/LoadingIndicator";
-import { ProductHeader } from "@/src/components/ProductHeader";
-import { ProductPagination } from "@/src/components/ProductPagination";
+import { Screen } from "@/src/components/global/Screen";
+import { Card } from "@/src/components/global/Card";
+import { FilterModal } from "@/src/components/global/FilterModal";
+import { SearchBar } from "@/src/components/global/SearchBar";
+import { LoadingIndicator } from "@/src/components/global/LoadingIndicator";
+import { ProductHeader } from "@/src/components/home/ProductHeader";
+import { ProductPagination } from "@/src/components/home/ProductPagination";
 
 import { colors, spacing, typography } from "@/src/theme";
 import { LucideListFilter } from "lucide-react-native";
 import { useHandleProductList } from "@/src/hooks/useHandleProductList";
 import { useProducts } from "@/src/hooks/useProducts";
+import { ProductDTO } from "@/src/dtos/ProductDTO";
+import { ConfirmModal } from "@/src/components/global/ConfirmModal";
 
 export default function ProductListScreen() {
+  // Etats
   const [isFilterModalVisible, setFilterModalVisible] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<ProductDTO | null>();
+
+  const confirmDelete = (product: ProductDTO) => {
+    setItemToDelete(product);
+    setModalVisible(true);
+  };
+
+  const onDeleteConfirmed = () => {
+    if (itemToDelete) {
+      handleDelete(itemToDelete);
+
+      // Reset état
+      setItemToDelete(null);
+      setModalVisible(false);
+    }
+  };
 
   const router = useRouter();
-  
+
   // customed hooks
   const { products, isLoading, loadProducts } = useProducts();
 
@@ -85,8 +105,10 @@ export default function ProductListScreen() {
                 <Card
                   product={item}
                   onPress={() => router.push(`/products/${item.id}` as Href)}
-                  onEdit={() => router.push(`/products/edit/${item.id}` as Href)}
-                  onDelete={() => handleDelete(item)}
+                  onEdit={() =>
+                    router.push(`/products/edit/${item.id}` as Href)
+                  }
+                  onDelete={() => confirmDelete(item)}
                 />
               )}
             />
@@ -99,9 +121,7 @@ export default function ProductListScreen() {
           </>
         ) : (
           <View style={styles.noResultsContainer}>
-            <Text style={styles.noResultsText}>
-              Aucun produit trouvé.
-            </Text>
+            <Text style={styles.noResultsText}>Aucun produit trouvé.</Text>
           </View>
         )}
       </View>
@@ -112,6 +132,13 @@ export default function ProductListScreen() {
         onApply={handleApplyFilters}
         products={products}
         initialFilters={activeFilters}
+      />
+      <ConfirmModal
+        visible={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        onConfirm={onDeleteConfirmed}
+        title="Suppression"
+        message="Voulez-vous vraiment supprimer ce produit ?"
       />
     </Screen>
   );

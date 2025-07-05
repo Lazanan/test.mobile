@@ -1,8 +1,6 @@
 import React from 'react';
 import { View, TextInput, Text, StyleSheet, TextInputProps } from 'react-native';
-import { colors } from '../theme/colors';
-import { spacing } from '../theme/spacing';
-import { typography } from '../theme/typography';
+import { colors, spacing, typography } from '@/src/theme';
 
 // Étendre TextInputProps pour accepter toutes les props d'un TextInput
 interface StyledInputProps extends TextInputProps {
@@ -47,7 +45,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.white,
-    height: 52, // Hauteur fixe pour aligner avec les boutons
+    height: 52, 
     borderRadius: 12,
     color: colors.black,
     minWidth: 100,

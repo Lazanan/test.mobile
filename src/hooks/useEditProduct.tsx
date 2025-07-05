@@ -4,7 +4,7 @@ import { useProducts } from "./useProducts";
 import { productApi } from "../api/productApi";
 import { Alert } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { ProductFormData } from "@/src/components/ProductForm";
+import { ProductFormData } from "@/src/components/productForm/ProductForm";
 
 export const useEditProduct = () => {
   // etats

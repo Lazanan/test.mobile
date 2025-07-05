@@ -1,7 +1,6 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet, View, ViewProps } from 'react-native';
-import { colors } from '../theme/colors';
-import { spacing } from '../theme/spacing';
+import { colors, spacing } from '@/src/theme';
 import { StatusBar } from 'expo-status-bar';
 
 // Étendre ViewProps pour accepter toutes les props d'une View standard

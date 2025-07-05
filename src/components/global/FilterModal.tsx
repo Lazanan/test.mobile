@@ -10,14 +10,9 @@ import {
 
 import { StyledButton } from "./StyledButton";
 import { StyledInput } from "./StyledInput";
-import {
-  X,
-  ListFilterIcon,
-  RotateCcw,
-  Check
-} from "lucide-react-native";
-import { colors, spacing, typography } from "../theme";
-import { ProductDTO } from "../dtos/ProductDTO";
+import { X, ListFilterIcon, RotateCcw, Check } from "lucide-react-native";
+import { colors, spacing, typography } from "@/src/theme";
+import { ProductDTO } from "@/src/dtos/ProductDTO";
 
 export interface Filters {
   categories: string[];
@@ -29,7 +24,7 @@ interface FilterModalProps {
   visible: boolean;
   onClose: () => void;
   onApply: (filters: Filters) => void;
-  products: ProductDTO[]; // Pour dériver les catégories et vendeurs
+  products: ProductDTO[]; // Pour dériver les catégories
   initialFilters: Filters;
 }
 
@@ -194,7 +189,7 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
     alignItems: "center",
   },
-  title: { ...typography.h1, color: colors.text },
+  title: { ...typography.h2, color: colors.text },
   sectionTitle: {
     ...typography.h3,
     color: colors.blue,

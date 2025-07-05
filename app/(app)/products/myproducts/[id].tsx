@@ -4,18 +4,16 @@ import { View, Pressable, StyleSheet, Text } from "react-native";
 import { useRouter, Href } from "expo-router";
 import { MasonryFlashList } from "@shopify/flash-list";
 
-import { Screen } from "@/src/components/Screen";
-import { Card } from "@/src/components/Card";
-import { FilterModal, Filters } from "@/src/components/FilterModal";
-import { SearchBar } from "@/src/components/SearchBar";
-import { LoadingIndicator } from "@/src/components/LoadingIndicator";
-import { ProductHeader } from "@/src/components/ProductHeader";
+import { Screen } from "@/src/components/global/Screen";
+import { Card } from "@/src/components/global/Card";
+import { FilterModal, Filters } from "@/src/components/global/FilterModal";
+import { SearchBar } from "@/src/components/global/SearchBar";
+import { LoadingIndicator } from "@/src/components/global/LoadingIndicator";
 import { colors, spacing, typography } from "@/src/theme";
 import {
   LucideListFilter,
   Package,
   DollarSign,
-  User,
   Plus,
 } from "lucide-react-native";
 import { useHandleProductList } from "@/src/hooks/useHandleProductList";
@@ -28,33 +26,32 @@ import { ProductDTO } from "@/src/dtos/ProductDTO";
 import { ConfirmModal } from "@/src/components/global/ConfirmModal";
 
 export default function MyProductListScreen() {
-  const { userStats } = useHandleProfile();
+  // Etats
   const [isFilterModalVisible, setFilterModalVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<ProductDTO | null>();
   const [activeFilters, setActiveFilters] = useState<Filters>({
     categories: [],
     vendors: [],
     price: { min: "", max: "" },
   });
-
+  
   const router = useRouter();
-  const { handleAddPress, handleDelete } = useHandleProductList(searchQuery);
+
+  // custom hooks
+  const { userStats } = useHandleProfile();
+  const { handleDelete } = useHandleProductList(searchQuery);
   const { products, isLoading } = useProducts();
   const { user } = useAuth();
 
-  const [modalVisible, setModalVisible] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState<ProductDTO | null>();
-
-  // Supposons filteredProducts et handleDelete (réel) déjà dans ton code
-
-  const confirmDelete = (product : ProductDTO) => {
+  const confirmDelete = (product: ProductDTO) => {
     setItemToDelete(product);
     setModalVisible(true);
   };
 
   const onDeleteConfirmed = () => {
     if (itemToDelete) {
-      // Appelle ta fonction réelle de suppression ici
       handleDelete(itemToDelete);
 
       // Reset état
@@ -63,16 +60,15 @@ export default function MyProductListScreen() {
     }
   };
 
+  // logique de filtrages
   const userProducts = products.filter(
     (p) => p.vendeur.toLowerCase() === user?.name.toLowerCase()
   );
-
-  const filteredProducts = useProductFiltering(
+  const filteredProducts = useProductFiltering( // utiser un custom hook
     userProducts,
     searchQuery,
     activeFilters
   );
-
   const handleApplyFilters = (newFilters: Filters) => {
     setActiveFilters(newFilters);
   };
@@ -84,6 +80,7 @@ export default function MyProductListScreen() {
   return (
     <Screen style={{ paddingHorizontal: spacing.sm }}>
       <View style={styles.flashlistContainer}>
+
         {/* Section Infos & Statistiques */}
         <View style={styles.statsCompactContainer}>
           <View style={styles.statsRow}>
@@ -110,7 +107,7 @@ export default function MyProductListScreen() {
               ]}
             >
               <Plus color={colors.black} size={24} />
-              <Text style={{ ...typography.caption}}>Ajouter</Text>
+              <Text style={{ ...typography.caption }}>Ajouter</Text>
             </Pressable>
           </View>
         </View>
@@ -138,7 +135,7 @@ export default function MyProductListScreen() {
                 product={item}
                 onPress={() => router.push(`/products/${item.id}` as Href)}
                 onEdit={() => router.push(`/products/edit/${item.id}` as Href)}
-                onDelete={() => confirmDelete(item)} 
+                onDelete={() => confirmDelete(item)}
               />
             )}
           />
@@ -149,6 +146,7 @@ export default function MyProductListScreen() {
         )}
       </View>
 
+      {/* Modal de Filtrage */}
       <FilterModal
         visible={isFilterModalVisible}
         onClose={() => setFilterModalVisible(false)}
@@ -171,51 +169,51 @@ export default function MyProductListScreen() {
 
 const styles = StyleSheet.create({
   statsCompactContainer: {
-  paddingHorizontal: spacing.md,
-  marginBottom: spacing.lg,
-},
+    paddingHorizontal: spacing.md,
+    marginBottom: spacing.lg,
+  },
 
-statsRow: {
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-  gap: spacing.sm,
-},
+  statsRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: spacing.sm,
+  },
 
-compactCard: {
-  flex: 1,
-  backgroundColor: colors.blue,
-  borderRadius: 12,
-  paddingVertical: spacing.sm,
-  paddingHorizontal: spacing.xs,
-  alignItems: "center",
-  justifyContent: "center",
-  minHeight: 80,
-  elevation: 3,
-  shadowColor: colors.black,
-  shadowOpacity: 0.1,
-  shadowOffset: { width: 0, height: 2 },
-  shadowRadius: 4,
-},
+  compactCard: {
+    flex: 1,
+    backgroundColor: colors.blue,
+    borderRadius: 12,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.xs,
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: 80,
+    elevation: 3,
+    shadowColor: colors.black,
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+  },
 
-cardValue: {
-  ...typography.h3,
-  color: colors.white,
-  marginTop: spacing.xs,
-},
+  cardValue: {
+    ...typography.h3,
+    color: colors.white,
+    marginTop: spacing.xs,
+  },
 
-cardLabel: {
-  ...typography.caption,
-  color: colors.white,
-  opacity: 0.8,
-  marginTop: 2,
-},
+  cardLabel: {
+    ...typography.caption,
+    color: colors.white,
+    opacity: 0.8,
+    marginTop: 2,
+  },
 
-addCard: {
-  backgroundColor: colors.yellow,
-  paddingVertical: spacing.sm,
-  paddingHorizontal: spacing.xs,
-},
+  addCard: {
+    backgroundColor: colors.yellow,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.xs,
+  },
 
   statsSection: {
     gap: spacing.md,
@@ -226,11 +224,11 @@ addCard: {
   statRowCard: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: colors.background, // ou colors.surface si défini
+    backgroundColor: colors.background,
     padding: spacing.md,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: colors.white + "20", // légère transparence
+    borderColor: colors.white + "20",
     shadowColor: colors.black,
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 2 },

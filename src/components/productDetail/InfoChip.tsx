@@ -1,7 +1,7 @@
 import { View, StyleSheet, Text } from "react-native";
-import { colors } from "../theme/colors";
-import { spacing } from "../theme/spacing";
-import { typography } from "../theme/typography";
+import { colors } from "../../theme/colors";
+import { spacing } from "../../theme/spacing";
+import { typography } from "../../theme/typography";
 
 type InfoChiProps = {
   icon: React.ReactNode;

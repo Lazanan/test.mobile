@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { View, Text, StyleSheet, Image, ScrollView, Alert } from "react-native";
 import {
   useLocalSearchParams,
@@ -17,20 +17,35 @@ import {
 
 import { typography, colors, spacing } from "@/src/theme";
 
-import { Screen } from "@/src/components/Screen";
-import { StyledButton } from "@/src/components/StyledButton";
-import { LoadingIndicator } from "@/src/components/LoadingIndicator";
-import { InfoChip } from "@/src/components/InfoChip";
+import { Screen } from "@/src/components/global/Screen";
+import { StyledButton } from "@/src/components/global/StyledButton";
+import { LoadingIndicator } from "@/src/components/global/LoadingIndicator";
+import { InfoChip } from "@/src/components/productDetail/InfoChip";
 
 import { useProducts } from "@/src/hooks/useProducts";
 import { useHandleProductDetail } from "@/src/hooks/useHandleProductDetail";
+import { ProductDTO } from "@/src/dtos/ProductDTO";
+import { ConfirmModal } from "@/src/components/global/ConfirmModal";
 
 export default function ProductDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
 
+  // custom hooks
   const { product, setProduct, handleDelete } = useHandleProductDetail();
   const { products, isLoading } = useProducts();
+
+  // Etat modal
+  const [modalVisible, setModalVisible] = useState(false);
+
+  // logique de suppression
+  const confirmDelete = (product: ProductDTO) => {
+    setModalVisible(true);
+  };
+  const onDeleteConfirmed = () => {
+    handleDelete();
+    setModalVisible(false);
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -47,7 +62,7 @@ export default function ProductDetailScreen() {
         }
       }
     }, [id, products])
-  ); //se redéclenchera si l'ID ou la liste de produits change
+  ); //Redéclenche si l'ID ou la liste de produits change
 
   if (isLoading || !product) {
     return <LoadingIndicator />;
@@ -109,10 +124,18 @@ export default function ProductDetailScreen() {
           <StyledButton
             icon={<Trash size={24} />}
             title="Supprimer"
-            onPress={handleDelete}
+            onPress={() => confirmDelete}
             variant="danger"
           />
         </View>
+        {/* Modal confirmation suppression */}
+        <ConfirmModal
+          visible={modalVisible}
+          onCancel={() => setModalVisible(false)}
+          onConfirm={onDeleteConfirmed}
+          title="Suppression"
+          message="Voulez-vous vraiment supprimer ce produit ?"
+        />
       </ScrollView>
     </Screen>
   );

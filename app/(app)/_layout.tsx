@@ -12,7 +12,7 @@ import { User } from "lucide-react-native";
 
 import { colors, spacing, typography } from "@/src/theme";
 import { ProductProvider } from "@/src/contexts/ProductContext";
-import { CustomBackButton } from "@/src/components/CustomBackButton";
+import { CustomBackButton } from "@/src/components/global/CustomBackButton";
 
 export default function AppLayout() {
   const router = useRouter();
@@ -30,13 +30,14 @@ export default function AppLayout() {
     setShowSplash(true);
     await new Promise((resolve) => setTimeout(resolve, 100)); // splash 1ms
     router.back();
-    setTimeout(() => setShowSplash(false), 300); // attendre un peu pour éviter flicker
+    setTimeout(() => setShowSplash(false), 300); 
   };
 
+  // gerer les evenements de retour du phone
   useEffect(() => {
     const onHardwareBackPress = () => {
       onBack();
-      return true; // on gère l'événement
+      return true; 
     };
 
     const subscription = BackHandler.addEventListener(
@@ -51,6 +52,8 @@ export default function AppLayout() {
 
   return (
     <ProductProvider>
+
+      {/* Splash screen loading */}
       <View style={{ flex: 1 }}>
         {showSplash && (
           <View style={styles.splashStyle}>
@@ -58,8 +61,10 @@ export default function AppLayout() {
           </View>
         )}
 
-        {/* On garde le Stack monté, mais on l'affiche seulement si le splash est inactif */}
+        {/* on l'affiche si le splash est inactif */}
         <View style={{ flex: 1, opacity: showSplash ? 0 : 1 }}>
+
+          {/* Les screens */}
           <Stack screenOptions={defaultScreenOptions}>
             <Stack.Screen
               name="index"

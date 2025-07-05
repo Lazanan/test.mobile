@@ -4,7 +4,7 @@ import { UserDTO } from '../dtos/UserDTO';
 const TOKEN_KEY = '@Auth:token';
 const USER_KEY = '@Auth:user';
 
-// --- Token Management ---
+// gerer token
 export const storeToken = async (token: string): Promise<void> => {
   try {
     await AsyncStorage.setItem(TOKEN_KEY, token);
@@ -31,7 +31,7 @@ export const removeToken = async (): Promise<void> => {
 };
 
 
-// --- User Management ---
+// gerer user
 export const storeUser = async (user: UserDTO): Promise<void> => {
   try {
     const jsonValue = JSON.stringify(user);

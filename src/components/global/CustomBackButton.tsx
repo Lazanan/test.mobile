@@ -2,7 +2,7 @@ import React from "react";
 import { Pressable, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { ChevronLeft } from "lucide-react-native";
-import { colors, spacing } from "../theme";
+import { colors, spacing } from "@/src/theme";
 
 interface CustomBackButtonProps {
   color?: string;
@@ -31,12 +31,9 @@ export const CustomBackButton: React.FC<CustomBackButtonProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    // Le padding augmente la zone cliquable, ce qui est bon pour l'UX
     padding: spacing.sm,
-    marginLeft: spacing.sm, // Marge pour ne pas être collé au bord de l'écran
+    marginLeft: spacing.sm, 
     color: colors.white,
-    // borderWidth: 1,
-    // borderColor: colors.white,
     backgroundColor: colors.yellow,
     borderRadius: "100%",
   },

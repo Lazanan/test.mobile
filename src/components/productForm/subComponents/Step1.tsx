@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Control, Controller, FieldErrors } from "react-hook-form";
-import { StyledInput } from "../../StyledInput";
+import { StyledInput } from "../../global/StyledInput";
 import { ProductFormData } from "../ProductForm";
 import { colors, spacing, typography } from "../../../theme";
 

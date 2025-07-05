@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Alert, Pressable } from 'react-native';
-import { Screen } from '../../src/components/Screen';
-import { StyledButton } from '../../src/components/StyledButton';
-import { StyledInput } from '../../src/components/StyledInput';
+import { Screen } from '../../src/components/global/Screen';
+import { StyledButton } from '../../src/components/global/StyledButton';
+import { StyledInput } from '../../src/components/global/StyledInput';
 import { useAuth } from '../../src/hooks/useAuth';
 import { typography, colors, spacing } from '../../src/theme';
 import { User, Mail, Lock } from 'lucide-react-native';
@@ -11,7 +11,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-// Définition du schéma de validation avec Zod
+// Schéma de validation avec Zod
 const signupSchema = z.object({
   name: z.string().min(3, 'Le nom doit contenir au moins 3 caractères'),
   email: z.string().email('Adresse email invalide'),
@@ -31,18 +31,18 @@ export default function SignupScreen() {
     defaultValues: { name: '', email: '', password: '' },
   });
 
+  // logique inscription
   const handleSignup = async(data: SignupFormData) => {
     setIsLoading(true);
     console.log('Signup data:', data);
-    // appel api
     await signup(data.name, data.email, data.password);
-    // simulation avec un peu de latence
+
     setTimeout(() => {
       Alert.alert('Succès', 'Compte créé ! Vous pouvez maintenant vous connecter.', [
         { text: 'OK', onPress: () => router.push('/login') },
       ]);
       setIsLoading(false);
-    }, 1500);
+    }, 1000);
   };
 
   return (

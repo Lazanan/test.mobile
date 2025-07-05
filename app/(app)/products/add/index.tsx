@@ -3,7 +3,7 @@ import { Alert, Text, StyleSheet, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Box } from 'lucide-react-native';
 
-import { Screen } from '@/src/components/Screen';
+import { Screen } from '@/src/components/global/Screen';
 import { ProductForm, ProductFormData } from '@/src/components/productForm/ProductForm';
 import { typography, colors, spacing } from '@/src/theme';
 

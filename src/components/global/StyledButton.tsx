@@ -1,8 +1,6 @@
 import React from 'react';
 import { Pressable, Text, StyleSheet, ActivityIndicator, PressableProps } from 'react-native';
-import { colors } from '../theme/colors';
-import { spacing } from '../theme/spacing';
-import { typography } from '../theme/typography';
+import { colors, spacing, typography } from '@/src/theme';
 import { View } from 'react-native';
 
 // Étendre PressableProps pour accepter toutes les props d'un Pressable
@@ -56,7 +54,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    // height: 52, // Hauteur fixe pour une meilleure cohérence
   },
   shadow: {
     ...StyleSheet.absoluteFillObject,

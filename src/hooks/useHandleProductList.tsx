@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useProducts } from "./useProducts";
-import { Filters } from "../components/FilterModal";
+import { Filters } from "../components/global/FilterModal";
 import { useRouter } from "expo-router";
 import { ProductDTO } from "../dtos/ProductDTO";
 import { Alert } from "react-native";

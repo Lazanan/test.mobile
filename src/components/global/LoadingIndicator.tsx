@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
-import { colors } from '../theme/colors';
+import { ActivityIndicator, StyleSheet } from 'react-native';
+import { colors } from '@/src/theme';
 import { Screen } from './Screen';
 
 export const LoadingIndicator = () => {
