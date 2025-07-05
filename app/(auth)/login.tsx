@@ -17,8 +17,9 @@ export default function LoginScreen() {
   const handleLogin = async () => {
     setIsLoading(true);
     try {
+      // appel api
       await login(email, password);
-      // redirection automatique vers le product list gerer par le layout racine 
+      // redirection automatique vers le product list gere' par le layout racine 
     } catch (error: any) {
       Alert.alert('Erreur de connexion', error.message || 'Une erreur est survenue.');
     } finally {
@@ -29,13 +30,13 @@ export default function LoginScreen() {
   return (
     <Screen style={styles.container}>
       <View>
-        <Text style={styles.title}>Welcome Back.</Text>
-        <Text style={styles.subtitle}>Log in to access the product catalog.</Text>
+        <Text style={styles.title}>Bon retour!</Text>
+        <Text style={styles.subtitle}>Se connecter pour avoir acces au catalog.</Text>
       </View>
 
       <View style={styles.formContainer}>
         <StyledInput
-          placeholder="Email Address"
+          placeholder="Adresse Email"
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
@@ -44,21 +45,21 @@ export default function LoginScreen() {
           label="Email"
         />
         <StyledInput
-          placeholder="Password"
+          placeholder="Mot de passe"
           value={password}
           onChangeText={setPassword}
           secureTextEntry
           leftIcon={<Lock color={colors.text} size={20} />}
-          label="Password"
+          label="Mot de passe"
         />
-        <StyledButton title="Log In Securely" onPress={handleLogin} loading={isLoading} disabled={isLoading} />
+        <StyledButton title="Se connecter" onPress={handleLogin} loading={isLoading} disabled={isLoading} />
       </View>
       
       <Link href="/signup" asChild>
         <Pressable>
           <Text style={styles.link}>
-            Don't have an account?{' '}
-            <Text style={{ fontFamily: 'Lexend-Bold', color: colors.secondary }}>Sign Up</Text>
+            Pas de compte?{' '}
+            <Text style={{ fontFamily: 'Lexend-Bold', color: colors.secondary }}>S'inscrire</Text>
           </Text>
         </Pressable>
       </Link>

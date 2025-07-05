@@ -6,8 +6,9 @@
     "orientation": "portrait",
     "icon": "./assets/images/global/logo.png",
     "scheme": "AreaStash",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "dark",
     "newArchEnabled": true,
+    "backgroundColor": "#07143F", 
     "splash": {
       "image": "./assets/images/global/logo.png",
       "resizeMode": "contain",
@@ -29,7 +30,8 @@
       "favicon": "./assets/images/global/logo.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-system-ui"
     ],
     "experiments": {
       "typedRoutes": true

@@ -1,110 +1,100 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useCallback } from "react";
 import { View, Text, StyleSheet, Image, ScrollView, Alert } from "react-native";
-import { useLocalSearchParams, useRouter, Href, useFocusEffect } from "expo-router";
-import { Screen } from "../../../src/components/Screen";
-import { productApi } from "../../../src/api/productApi";
-import { ProductDTO } from "../../../src/dtos/ProductDTO";
-import { LoadingIndicator } from "../../../src/components/LoadingIndicator";
-import { typography, colors, spacing } from "../../../src/theme";
+import {
+  useLocalSearchParams,
+  useRouter,
+  Href,
+  useFocusEffect,
+} from "expo-router";
 import { Tag, Package, User, DollarSign } from "lucide-react-native";
-import { StyledButton } from "../../../src/components/StyledButton";
 
-import { useProducts } from '@/src/hooks/useProducts';
+import { typography, colors, spacing } from "@/src/theme";
 
+import { Screen } from "@/src/components/Screen";
+import { StyledButton } from "@/src/components/StyledButton";
+import { LoadingIndicator } from "@/src/components/LoadingIndicator";
+import { InfoChip } from "@/src/components/InfoChip";
+
+import { useProducts } from "@/src/hooks/useProducts";
+import { useHandleProductDetail } from "@/src/hooks/useHandleProductDetail";
 
 export default function ProductDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
-  const [product, setProduct] = useState<ProductDTO | null>(null);
 
-  // 1. Récupérer la liste globale et la fonction de suppression depuis le contexte
-  const { products, deleteProduct, isLoading } = useProducts();
+  const { product, setProduct, handleDelete } = useHandleProductDetail();
+  const { products, isLoading } = useProducts();
 
-  
-   // 3. Utiliser useFocusEffect pour mettre à jour les données chaque fois que l'écran devient visible
   useFocusEffect(
     useCallback(() => {
       if (id && products.length > 0) {
-        // On cherche le produit avec les données les plus à jour depuis le contexte
-        const currentProduct = products.find(p => p.id === id);
+        // Chercher le produit
+        const currentProduct = products.find((p) => p.id === id);
         if (currentProduct) {
           setProduct(currentProduct);
         } else {
-          // Si le produit n'est plus dans la liste (ex: supprimé sur un autre appareil)
-          // On redirige l'utilisateur
+          // Si le produit n'est pas dans la liste
           Alert.alert("Produit introuvable", "Ce produit n'existe plus.", [
-            { text: "OK", onPress: () => router.back() }
+            { text: "OK", onPress: () => router.back() },
           ]);
         }
       }
-    }, [id, products]) // Ce hook se redéclenchera si l'ID ou la liste de produits change
-  );
-  
+    }, [id, products])
+  ); //se redéclenchera si l'ID ou la liste de produits change
+
   if (isLoading || !product) {
     return <LoadingIndicator />;
   }
-  
-  const EditScreenPath = `products/edit/${id}`;
 
-
-  const handleDelete = async() => {
-    Alert.alert(
-      "Supprimer le produit",
-      `Êtes-vous sûr de vouloir supprimer "${product.name}" ?`,
-      [
-        { text: "Annuler", style: "cancel" },
-        {
-          text: "Supprimer",
-          style: "destructive",
-          onPress: async() => {
-            // On appelle la fonction de suppression du contexte
-              await deleteProduct(product.id);
-            
-            console.log(`Deleting product ${product.id}`);
-            router.back();
-          },
-        },
-      ]
-    );
-  };
+  const Infos = [
+    {
+      icon: <DollarSign size={18} color={colors.secondary} />,
+      label: "Prix",
+      value: `${product.price.toFixed(2)} €`,
+    },
+    {
+      icon: <Package size={18} color={colors.secondary} />,
+      label: "Stock",
+      value: String(product.stock),
+    },
+    {
+      icon: <Tag size={18} color={colors.secondary} />,
+      label: "Catégorie",
+      value: product.category,
+    },
+    {
+      icon: <User size={18} color={colors.secondary} />,
+      label: "Vendeur",
+      value: product.vendeur,
+    },
+  ];
 
   return (
     <Screen>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Image source={{ uri: product.image }} style={styles.image} />
+
         <View style={styles.content}>
           <Text style={styles.name}>{product.name}</Text>
           <Text style={styles.description}>{product.description}</Text>
 
           <View style={styles.infoGrid}>
-            <InfoChip
-              icon={<DollarSign size={18} color={colors.secondary} />}
-              label="Prix"
-              value={`${product.price.toFixed(2)} €`}
-            />
-            <InfoChip
-              icon={<Package size={18} color={colors.secondary} />}
-              label="Stock"
-              value={String(product.stock)}
-            />
-            <InfoChip
-              icon={<Tag size={18} color={colors.secondary} />}
-              label="Catégorie"
-              value={product.category}
-            />
-            <InfoChip
-              icon={<User size={18} color={colors.secondary} />}
-              label="Vendeur"
-              value={product.vendeur}
-            />
+            {Infos.map((info, index) => (
+              <InfoChip
+                key={index}
+                icon={info.icon}
+                label={info.label}
+                value={info.value}
+              />
+            ))}
           </View>
         </View>
+
         <View style={styles.actions}>
           <StyledButton
             title="Modifier"
             onPress={() => {
-              /* Navigation vers l'écran de modification */
-              router.push(EditScreenPath as Href);
+              router.push(`products/edit/${id}` as Href);
             }}
             variant="secondary"
           />
@@ -119,24 +109,6 @@ export default function ProductDetailScreen() {
   );
 }
 
-const InfoChip = ({
-  icon,
-  label,
-  value,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-}) => (
-  <View style={styles.chip}>
-    <View style={styles.chipHeader}>
-      {icon}
-      <Text style={styles.chipLabel}>{label}</Text>
-    </View>
-    <Text style={styles.chipValue}>{value}</Text>
-  </View>
-);
-
 const styles = StyleSheet.create({
   image: { width: "100%", height: 300, backgroundColor: colors.white },
   content: { padding: spacing.md },
@@ -148,22 +120,11 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
     color: colors.white,
   },
-  infoGrid: { flexDirection: "row", flexWrap: "wrap", gap: spacing.md },
-  chip: {
-    flexBasis: "47%",
-    backgroundColor: colors.white,
-    padding: spacing.md,
-    borderWidth: 2,
-    borderColor: colors.border,
-    gap: spacing.sm,
-  },
-  chipHeader: { flexDirection: "row", alignItems: "center", gap: spacing.sm },
-  chipLabel: { ...typography.caption, textTransform: "uppercase" },
-  chipValue: { ...typography.body },
   actions: {
     flexDirection: "row",
     gap: spacing.md,
     padding: spacing.md,
     marginTop: spacing.lg,
   },
+  infoGrid: { flexDirection: "row", flexWrap: "wrap", gap: spacing.md },
 });

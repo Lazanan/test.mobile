@@ -1,26 +1,29 @@
 import { Stack, useRouter } from "expo-router";
 import React from "react";
 import { Image, Pressable, StyleSheet, View } from "react-native";
-import { User, LogOut } from "lucide-react-native";
-import { colors, spacing, typography } from "../../src/theme";
-import { useAuth } from "../../src/hooks/useAuth";
-import { ProductProvider } from "../../src/contexts/ProductContext";
-import { CustomBackButton } from "../../src/components/CustomBackButton"; // <-- Importer notre composant
+import { User } from "lucide-react-native";
+
+import { colors, spacing, typography } from "@/src/theme";
+
+import { ProductProvider } from "@/src/contexts/ProductContext";
+
+import { CustomBackButton } from "@/src/components/CustomBackButton"; 
 
 export default function AppLayout() {
   const router = useRouter();
 
+  // style par defaut du header
   const defaultScreenOptions = {
-    headerStyle: { backgroundColor: colors.blue }, // Pour laisser voir le fond Aurora
+    headerStyle: { backgroundColor: colors.blue },
     headerTitleStyle: { ...typography.h3, color: colors.text },
     headerShadowVisible: false,
-    headerTitleAlign: "center" as "center", // Centrer le titre
+    headerTitleAlign: "center" as "center", 
   };
 
   return (
     <ProductProvider>
       <Stack screenOptions={defaultScreenOptions}>
-        {/* --- Écran sans bouton retour --- */}
+        {/* route racine */}
         <Stack.Screen
           name="index"
           options={{
@@ -41,40 +44,43 @@ export default function AppLayout() {
           }}
         />
 
-        {/* --- Écrans avec bouton retour personnalisé --- */}
+        {/* route profile */}
         <Stack.Screen
           name="profile"
           options={{
             title: "Mon Profil",
-            headerLeft: () => <CustomBackButton />, // <-- Utilisation du composant
+            headerLeft: () => <CustomBackButton />,
             presentation: "modal",
-            // Sur une modale, le bouton de fermeture est géré différemment (souvent un 'X' ou 'Done')
-            // mais si elle était un 'push', on utiliserait headerLeft ici aussi.
           }}
         />
+
+        {/* route detail produit */}
         <Stack.Screen
           name="products/[id]"
           options={{
             title: "Détails du Produit",
-            headerLeft: () => <CustomBackButton />, // <-- Utilisation du composant
-            headerBackVisible: false, // Cache le bouton par défaut
+            headerLeft: () => <CustomBackButton />,
+            headerBackVisible: false, 
           }}
         />
+
+        {/* route ajout produit */}
         <Stack.Screen
-          name="products/add"
+          name="products/add/index"
           options={{
             title: "Nouveau Produit",
-            headerLeft: () => <CustomBackButton />, // <-- Utilisation du composant
+            headerLeft: () => <CustomBackButton />, 
             presentation: "modal",
           }}
         />
-        {/* Assurez-vous d'avoir un fichier edit/[id].tsx dans le dossier products */}
+
+        {/* route modifier produit */}
         <Stack.Screen
           name="products/edit/[id]"
           options={{
             title: "Modifier le Produit",
             presentation: "modal",
-            headerLeft: () => <CustomBackButton />, // <-- Utilisation aussi ici
+            headerLeft: () => <CustomBackButton />, 
             headerBackVisible: false,
           }}
         />

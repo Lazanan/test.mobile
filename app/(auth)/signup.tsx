@@ -11,7 +11,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-// Définir le schéma de validation avec Zod
+// Définition du schéma de validation avec Zod
 const signupSchema = z.object({
   name: z.string().min(3, 'Le nom doit contenir au moins 3 caractères'),
   email: z.string().email('Adresse email invalide'),
@@ -21,12 +21,11 @@ const signupSchema = z.object({
 type SignupFormData = z.infer<typeof signupSchema>;
 
 export default function SignupScreen() {
-  // Remplacer signup par une vraie fonction dans le AuthContext si vous l'implémentez
-  // Pour l'instant, on simule une redirection
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { signup } = useAuth();
 
+  // utilisation de hook form pour gerer le formulaire
   const { control, handleSubmit, formState: { errors } } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
     defaultValues: { name: '', email: '', password: '' },
@@ -35,7 +34,9 @@ export default function SignupScreen() {
   const handleSignup = async(data: SignupFormData) => {
     setIsLoading(true);
     console.log('Signup data:', data);
+    // appel api
     await signup(data.name, data.email, data.password);
+    // simulation avec un peu de latence
     setTimeout(() => {
       Alert.alert('Succès', 'Compte créé ! Vous pouvez maintenant vous connecter.', [
         { text: 'OK', onPress: () => router.push('/login') },
@@ -47,8 +48,8 @@ export default function SignupScreen() {
   return (
     <Screen style={styles.container}>
       <View>
-        <Text style={styles.title}>Create Account.</Text>
-        <Text style={styles.subtitle}>Join us to start managing your products.</Text>
+        <Text style={styles.title}>Creer Un Compte.</Text>
+        <Text style={styles.subtitle}>Rejoignez nous pour commencer a gerer vos produits.</Text>
       </View>
 
       <View style={styles.formContainer}>
@@ -57,13 +58,13 @@ export default function SignupScreen() {
           name="name"
           render={({ field: { onChange, onBlur, value } }) => (
             <StyledInput
-              placeholder="Full Name"
+              placeholder="Nom d'utilisateur"
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
               leftIcon={<User color={colors.text} size={20} />}
               error={errors.name?.message}
-              label='Name'
+              label='Nom'
             />
           )}
         />
@@ -72,7 +73,7 @@ export default function SignupScreen() {
           name="email"
           render={({ field: { onChange, onBlur, value } }) => (
             <StyledInput
-              placeholder="Email Address"
+              placeholder="email@exemple.com"
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -80,7 +81,7 @@ export default function SignupScreen() {
               autoCapitalize="none"
               leftIcon={<Mail color={colors.text} size={20} />}
               error={errors.email?.message}
-              label='Email'
+              label='Adresse Email'
             />
           )}
         />
@@ -89,32 +90,32 @@ export default function SignupScreen() {
           name="password"
           render={({ field: { onChange, onBlur, value } }) => (
             <StyledInput
-              placeholder="Password"
+              placeholder="votre mot de passe"
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
               secureTextEntry
               leftIcon={<Lock color={colors.text} size={20} />}
               error={errors.password?.message}
-              label='Password'
+              label='Mot de passe'
             />
           )}
         />
-        <StyledButton title="Create My Account" onPress={handleSubmit(handleSignup)} loading={isLoading} disabled={isLoading} />
+        <StyledButton title="Creer Mon Compte" onPress={handleSubmit(handleSignup)} loading={isLoading} disabled={isLoading} />
       </View>
 
       <Link href="/login" asChild>
         <Pressable>
           <Text style={styles.link}>
-            Already have an account?{' '}
-            <Text style={{ fontFamily: 'Lexend-Bold', color: colors.secondary }}>Log In</Text>
+            Vous avez un compte?{' '}
+            <Text style={{ fontFamily: 'Lexend-Bold', color: colors.secondary }}>Se Connecter</Text>
           </Text>
         </Pressable>
       </Link>
     </Screen>
   );
 }
-// Les styles sont très similaires à ceux de LoginScreen
+
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'space-between', padding: spacing.lg },
   title: { ...typography.h1, color: colors.text, textAlign: 'center', marginTop: spacing.xl },

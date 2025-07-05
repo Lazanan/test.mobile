@@ -3,23 +3,23 @@ import { Alert, Text, StyleSheet, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Box } from 'lucide-react-native';
 
-import { Screen } from '../../../src/components/Screen';
-import { ProductForm, ProductFormData } from '../../../src/components/ProductForm';
-import { typography, colors, spacing } from '../../../src/theme';
+import { Screen } from '@/src/components/Screen';
+import { ProductForm, ProductFormData } from '@/src/components/ProductForm';
+import { typography, colors, spacing } from '@/src/theme';
 
 import { useProducts } from '@/src/hooks/useProducts';
 
 export default function AddProductScreen() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
-  const { addProduct } = useProducts(); // Récupérer la fonction du contexte
+  const { addProduct } = useProducts();
 
   // Cette fonction sera passée au composant ProductForm
   const handleAddProduct = async (data: ProductFormData, imageUri: string) => {
     setIsSubmitting(true);
     try {
       const productData = { ...data, image: imageUri };
-      // On appelle la fonction du contexte, qui gère l'API ET la mise à jour de l'état
+      // Appelle de la fonction du contexte, qui gère l'API ET la mise à jour de l'état
       await addProduct(productData);
 
       Alert.alert('Succès', `Le produit "${data.name}" a été ajouté.`);
@@ -38,7 +38,7 @@ export default function AddProductScreen() {
         <Text style={styles.title}>Nouveau Produit</Text>
       </View>
       
-      {/* On affiche le formulaire en lui passant la logique de soumission */}
+      {/* formulaire */}
       <ProductForm
         onSubmit={handleAddProduct}
         isLoading={isSubmitting}

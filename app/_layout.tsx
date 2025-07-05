@@ -9,17 +9,15 @@ import { colors } from '../src/theme/colors';
 
 import { productApi } from '@/src/api/productApi';
 
-// Empêcher le splash screen de se cacher automatiquement
 SplashScreen.preventAutoHideAsync();
 
 const InitialLayout = () => {
   const { token, isLoading: isAuthLoading } = useAuth();
   const segments = useSegments();
   const router = useRouter();
-  // On ajoute un état pour suivre l'initialisation des produits
-  const [isDataInitialized, setIsDataInitialized] = useState(false);
 
-  // On garde un état pour savoir si l'application est "prête"
+  //états pour suivre l'initialisation des produits et pour savoir si l'application est prête
+  const [isDataInitialized, setIsDataInitialized] = useState(false);
   const [appIsReady, setAppIsReady] = useState(false);
 
   // Charger les polices personnalisées
@@ -68,7 +66,6 @@ const InitialLayout = () => {
     );
   }
 
-  // Une fois chargé, on rend les routes de l'application
   return (
     <Stack screenOptions={{ headerShown: false, animation: 'fade' }}>
       <Stack.Screen name="(auth)" />
