@@ -62,14 +62,6 @@ export default function ProfileScreen() {
           </View>
         </View>
 
-        <Pressable
-          style={styles.myProductsLink}
-          onPress={() => router.push(`products/myproducts/${user.id}` as Href)}
-        >
-          <Text style={styles.myProductsLinkLabel}>Voir Mes Produits</Text>
-          <ArrowRight color={colors.yellow} />
-        </Pressable>
-
         {/*Section Informations et Modification*/}
         <View style={styles.infoSection}>
           <Text style={styles.sectionTitle}>Mon Profil</Text>
@@ -137,7 +129,7 @@ const styles = StyleSheet.create({
   },
   statValue: { ...typography.h2, color: colors.text, textAlign: "center" },
   statLabel: { ...typography.caption, color: colors.white, opacity: 0.8 },
-  infoSection: { paddingHorizontal: spacing.md, gap: spacing.md },
+  infoSection: { paddingHorizontal: spacing.md, gap: spacing.md, marginTop: spacing.xl },
   sectionTitle: {
     ...typography.h3,
     color: colors.text,

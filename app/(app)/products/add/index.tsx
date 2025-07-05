@@ -21,9 +21,9 @@ export default function AddProductScreen() {
       const productData = { ...data, image: imageUri };
       // Appelle de la fonction du contexte, qui gère l'API ET la mise à jour de l'état
       await addProduct(productData);
+      router.replace('/');
 
       Alert.alert('Succès', `Le produit "${data.name}" a été ajouté.`);
-      router.back();
     } catch (error: any) {
       Alert.alert('Erreur', error.message || "Une erreur est survenue lors de l'ajout.");
     } finally {

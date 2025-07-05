@@ -99,15 +99,6 @@ export default function AppLayout() {
             />
 
             <Stack.Screen
-              name="products/myproducts/[id]"
-              options={{
-                title: "Mes produits",
-                headerLeft: () => <CustomBackButton onBack={onBack} />,
-                presentation: "modal",
-              }}
-            />
-
-            <Stack.Screen
               name="products/[id]"
               options={{
                 title: "Détails du Produit",
