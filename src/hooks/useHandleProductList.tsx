@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useProducts } from "./useProducts";
 import { Filters } from "../components/FilterModal";
 import { useRouter } from "expo-router";
@@ -6,19 +6,21 @@ import { ProductDTO } from "../dtos/ProductDTO";
 import { Alert } from "react-native";
 import { useProductFiltering } from "./useProductFiltering";
 
+const defaultFilters = {
+    categories: [],
+    vendors: [],
+    price: { min: "", max: "" },
+  }
+
 const PAGE_SIZE = 10;
 export function useHandleProductList(searchQuery : string) {
   // Etats
   const [currentPage, setCurrentPage] = useState(1);
-  const [activeFilters, setActiveFilters] = useState<Filters>({
-    categories: [],
-    vendors: [],
-    price: { min: "", max: "" },
-  });
+  const [activeFilters, setActiveFilters] = useState<Filters>(defaultFilters);
 
   // hooks customized
   const { products, deleteProduct } = useProducts();
-  const filteredProducts = useProductFiltering(
+  let filteredProducts = useProductFiltering(
     products,
     searchQuery,
     activeFilters
@@ -28,7 +30,7 @@ export function useHandleProductList(searchQuery : string) {
 
   // variables pour la pagination
   const totalPages = Math.ceil(filteredProducts.length / PAGE_SIZE);
-  const paginatedProducts = filteredProducts.slice(
+  let paginatedProducts = filteredProducts.slice(
     (currentPage - 1) * PAGE_SIZE,
     currentPage * PAGE_SIZE
   );
@@ -54,6 +56,8 @@ export function useHandleProductList(searchQuery : string) {
             try {
               await deleteProduct(product.id);
               Alert.alert("Succès", "Le produit a été supprimé.");
+              setActiveFilters(defaultFilters);
+              paginatedProducts = products;
             } catch (error: any) {
               Alert.alert(
                 "Erreur",

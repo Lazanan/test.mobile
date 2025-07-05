@@ -46,9 +46,9 @@ export const EditableField = ({
         )}
         <Pressable onPress={isEditing ? handleSave : handleEdit}>
           {isEditing ? (
-            <Check color={'green'} size={22} />
+            <Check color={'green'} size={32} />
           ) : (
-            <Edit3 color={colors.yellow} size={18} />
+            <Edit3 color={colors.yellow} size={24} />
           )}
         </Pressable>
       </View>
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: colors.white,
+    borderColor: 'gray',
     padding: spacing.md,
   },
   fieldLabel: {

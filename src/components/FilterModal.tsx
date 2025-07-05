@@ -118,7 +118,7 @@ export const FilterModal: React.FC<FilterModalProps> = ({
               ))}
             </View>
 
-            <Text style={styles.sectionTitle}>Prix ($)</Text>
+            <Text style={styles.sectionTitle}>Prix (€)</Text>
             <View style={styles.priceContainer}>
               <StyledInput
                 style={{ fontSize: 12, textAlign: "center" }}
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   chipSelected: { backgroundColor: colors.yellow },
-  chipText: { ...typography.body, color: colors.background },
+  chipText: { ...typography.caption, color: colors.background },
   chipTextSelected: { color: colors.black, fontFamily: "Lexend-Bold" },
   priceContainer: { flexDirection: "row", gap: spacing.md },
   footer: {

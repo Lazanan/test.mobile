@@ -11,24 +11,36 @@ interface StyledInputProps extends TextInputProps {
   label?: string
 }
 
-export const StyledInput: React.FC<StyledInputProps> = ({ leftIcon, error, style, label, ...props }) => {
+export const StyledInput: React.FC<StyledInputProps> = ({ leftIcon, error, label, style, value, ...props }) => {
+  const showSuccess = !error && value;
+
   return (
     <View>
-      <View style={styles.labelContainer}>
-        {leftIcon && <>{leftIcon}</>}
-        <Text style={styles.label}>{label}</Text>
-      </View>
-      <View style={[styles.container, error ? styles.errorBorder : {}]}>
+      {label ? (
+        <View style={styles.labelContainer}>
+          {leftIcon && <>{leftIcon}</>}
+          <Text style={styles.label}>{label}</Text>
+        </View>
+      ) : null}
+
+      <View style={[
+        styles.container,
+        error ? styles.errorBorder : showSuccess ? styles.successBorder : null
+      ]}>
         <TextInput
           style={[typography.body, styles.input, style]}
-          placeholderTextColor={colors.black + '80'} // Noir avec 50% d'opacité
+          placeholderTextColor={colors.black + '80'}
+          value={value}
           {...props}
         />
       </View>
+
       {error && <Text style={styles.errorText}>{error}</Text>}
+      {showSuccess && <Text style={styles.successText}>✓ Champ valide</Text>}
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -53,9 +65,6 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.md,
     color: colors.black,
   },
-  errorBorder: {
-    borderColor: colors.accent,
-  },
   errorText: {
     ...typography.caption,
     color: colors.accent,
@@ -73,5 +82,19 @@ const styles = StyleSheet.create({
   label: {
     color: colors.white,
     fontSize: 18,
-  }
+  },
+  errorBorder: {
+    borderColor: colors.accent,
+    borderWidth: 1,
+  },
+  successBorder: {
+    borderColor: 'green',
+    borderWidth: 1,
+  },
+  successText: {
+    ...typography.caption,
+    color: 'green',
+    marginTop: spacing.xs,
+    marginLeft: spacing.xs,
+  },
 });

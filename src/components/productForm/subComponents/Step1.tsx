@@ -20,7 +20,8 @@ export const Step1: React.FC<Step1Props> = ({ control, errors }) => {
         name="name"
         render={({ field: { onChange, onBlur, value } }) => (
           <StyledInput
-            placeholder="Nom du produit"
+            placeholder="nom du produit"
+            label="Nom du produit"
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -28,12 +29,13 @@ export const Step1: React.FC<Step1Props> = ({ control, errors }) => {
           />
         )}
       />
-      
+
       <Controller
         control={control}
         name="price"
         render={({ field: { onChange, onBlur, value } }) => (
           <StyledInput
+            label="Prix"
             placeholder="Prix (€)"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -49,6 +51,7 @@ export const Step1: React.FC<Step1Props> = ({ control, errors }) => {
         name="stock"
         render={({ field: { onChange, onBlur, value } }) => (
           <StyledInput
+            label="Stock"
             placeholder="Stock disponible"
             onBlur={onBlur}
             onChangeText={onChange}

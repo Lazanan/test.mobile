@@ -1,21 +1,27 @@
 import React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
-import { LucideListCollapse, Plus } from "lucide-react-native";
+import { Plus, ListMinusIcon } from "lucide-react-native";
 import { colors, spacing } from "../theme";
 
 type Props = {
   onAddPress: () => void;
+  title?: string;
+  description?: string;
 };
 
-export const ProductHeader = ({ onAddPress }: Props) => (
+export const ProductHeader = ({
+  onAddPress,
+  title = "Listes des Produits",
+  description = "Parcourez notre sélection exclusive",
+}: Props) => (
   <View style={styles.topHeader}>
     <View style={styles.topHeaderContent}>
       <View>
         <View style={styles.title}>
-          <LucideListCollapse size={32} color={colors.yellow} />
-          <Text style={styles.titleStyle}>Listes des Produits</Text>
+          <ListMinusIcon size={32} color={colors.blue} />
+          <Text style={styles.titleStyle}>{title}</Text>
         </View>
-        <Text style={styles.subtitle}>Parcourez notre sélection exclusive</Text>
+        <Text style={styles.subtitle}>{description}</Text>
       </View>
       <Pressable style={styles.fab} onPress={onAddPress}>
         <Plus color={colors.yellow} size={36} />

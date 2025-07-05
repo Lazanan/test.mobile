@@ -1,20 +1,24 @@
-import React from 'react';
-import { Pressable, StyleSheet } from 'react-native';
-import { useRouter } from 'expo-router';
-import { ChevronLeft } from 'lucide-react-native';
-import { colors, spacing } from '../theme';
+import React from "react";
+import { Pressable, StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
+import { ChevronLeft } from "lucide-react-native";
+import { colors, spacing } from "../theme";
 
 interface CustomBackButtonProps {
   color?: string;
+  onBack: () => void;
 }
 
-export const CustomBackButton: React.FC<CustomBackButtonProps> = ({ color = colors.white }) => {
+export const CustomBackButton: React.FC<CustomBackButtonProps> = ({
+  color = colors.white,
+  onBack,
+}) => {
   const router = useRouter();
 
   return (
-    // Pressable pour gérer l'interaction
+    // gérer l'interaction
     <Pressable
-      onPress={() => router.back()}
+      onPress={() => onBack()}
       style={({ pressed }) => [
         styles.container,
         { opacity: pressed ? 0.7 : 1 }, // Effet visuel au clic
@@ -34,6 +38,6 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     // borderColor: colors.white,
     backgroundColor: colors.yellow,
-    borderRadius: '100%',
+    borderRadius: "100%",
   },
 });

@@ -30,7 +30,7 @@ if (
 }
 
 const productSchema = z.object({
-  name: z.string().min(3, "Le nom est requis"),
+  name: z.string().min(3, "Le nom est requis et doit avoir au moins (3 caracteres)"),
   price: z.coerce
     .number({ invalid_type_error: "Prix invalide" })
     .positive("Le prix doit être positif"),
@@ -43,7 +43,6 @@ const productSchema = z.object({
   description: z.string(),
 });
 
-// Important: exporter le type pour que les composants enfants puissent l'utiliser.
 export type ProductFormData = z.infer<typeof productSchema>;
 
 interface ProductFormProps {
@@ -81,7 +80,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     defaultValues: isEditMode
       ? { ...product, description: product.description || "" }
       : {},
-    mode: "onBlur",
+    mode: "onChange",
   });
 
   const pickImage = async () => {
@@ -151,6 +150,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
             control={control}
             imageUri={imageUri}
             onPickImage={pickImage}
+            errors={errors}
           />
         )}
       </View>

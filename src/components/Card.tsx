@@ -12,7 +12,8 @@ import { colors } from "../theme/colors";
 import { spacing } from "../theme/spacing";
 import { typography } from "../theme/typography";
 import { ProductDTO } from "../dtos/ProductDTO";
-import { MoreVertical, Edit, Trash2 } from "lucide-react-native"; // Importer les icônes nécessaires
+import { MoreVertical, X, Edit3Icon, Info, Trash } from "lucide-react-native"; // Importer les icônes nécessaires
+import { Href, useRouter } from "expo-router";
 
 // Mettre à jour les props pour accepter les fonctions de modification et de suppression
 interface CardProps {
@@ -29,6 +30,7 @@ export const Card: React.FC<CardProps> = ({
   onDelete,
 }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const router = useRouter();
 
   // Simule des hauteurs d'image variables pour l'effet Masonry
   const imageHeight = parseInt(product.id, 10) % 2 === 0 ? 250 : 200;
@@ -45,6 +47,10 @@ export const Card: React.FC<CardProps> = ({
   const handleDeletePress = () => {
     setIsMenuVisible(false);
     onDelete();
+  };
+
+  const handleViewDetailsPress = () => {
+    router.push(`products/${product.id}` as Href);
   };
 
   return (
@@ -92,16 +98,30 @@ export const Card: React.FC<CardProps> = ({
           onPress={() => setIsMenuVisible(false)}
         >
           <View style={styles.menuContainer}>
-            <Pressable style={styles.menuItem} onPress={handleEditPress}>
-              <Edit size={20} color={colors.text} />
-              <Text style={styles.menuItemText}>Modifier</Text>
+            <Pressable style={styles.menuItem} onPress={handleViewDetailsPress}>
+              <Info size={20} color={colors.yellow} />
+              <Text style={[styles.menuItemText, { color: colors.white }]}>
+                Voir détails
+              </Text>
             </Pressable>
+
             <View style={styles.menuDivider} />
+
+            <Pressable style={styles.menuItem} onPress={handleEditPress}>
+              <Edit3Icon size={20} color={colors.yellow} />
+              <Text style={styles.menuItemText}>Changer info</Text>
+            </Pressable>
+
+            <View style={styles.menuDivider} />
+
             <Pressable style={styles.menuItem} onPress={handleDeletePress}>
-              <Trash2 size={20} color={colors.accent} />
+              <Trash size={20} color={colors.accent} />
               <Text style={[styles.menuItemText, { color: colors.accent }]}>
                 Supprimer
               </Text>
+            </Pressable>
+            <Pressable onPress={() => setIsMenuVisible(false)} style={styles.closeIcon}>
+              <X size={28} color={colors.white} />
             </Pressable>
           </View>
         </Pressable>
@@ -124,7 +144,6 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
   container: {
-    // width: '100%', // <-- SUPPRIMÉ, c'était la cause du problème.
     backgroundColor: colors.white,
     borderWidth: 2,
     borderColor: colors.border,
@@ -162,7 +181,7 @@ const styles = StyleSheet.create({
   },
   menuContainer: {
     width: "60%",
-    backgroundColor: "#1b263b", // Couleur de fond du thème Aurora
+    backgroundColor: "#1b263b",
     borderRadius: 12,
     borderWidth: 1,
     borderColor: colors.white,
@@ -192,6 +211,11 @@ const styles = StyleSheet.create({
     padding: spacing.xs,
     backgroundColor: "rgba(0,0,0,0.3)", // Fond semi-transparent pour la lisibilité
     borderRadius: 20,
-    zIndex: 2, // S'assurer qu'il est au-dessus du gradient
+    zIndex: 2,
   },
+  closeIcon : {
+    position: "absolute",
+    top: 2,
+    right: 2,
+  }
 });

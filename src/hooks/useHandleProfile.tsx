@@ -6,6 +6,7 @@ import { Alert } from "react-native";
 export function useHandleProfile() {
   const { user, updateUser, logout } = useAuth();
   const { products } = useProducts();
+  
   const userStats = useMemo(() => {
     if (!user?.name) return { productCount: 0, totalStockValue: 0 };
 

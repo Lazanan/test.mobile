@@ -7,7 +7,7 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { Control, Controller } from "react-hook-form";
+import { Control, Controller, FieldErrors } from "react-hook-form";
 import { UploadCloud } from "lucide-react-native";
 import { ProductFormData } from "../ProductForm";
 import { colors, spacing, typography } from "../../../theme";
@@ -16,12 +16,15 @@ interface Step3Props {
   control: Control<ProductFormData>;
   imageUri: string | null;
   onPickImage: () => void;
+  errors: FieldErrors<ProductFormData>;
 }
 
 export const Step3: React.FC<Step3Props> = ({
   control,
   imageUri,
   onPickImage,
+  errors
+  
 }) => {
   return (
     <View style={styles.content}>
@@ -42,16 +45,30 @@ export const Step3: React.FC<Step3Props> = ({
         control={control}
         name="description"
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            placeholder="Description du produit"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            multiline
-            numberOfLines={4}
-            style={styles.description}
-            placeholderTextColor={"gray"} // Utilisation de la couleur de texte principale avec opacité
-          />
+          <View>
+            <TextInput
+              placeholder="Description du produit"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              multiline
+              numberOfLines={4}
+              style={[
+                styles.description,
+                errors.description
+                  ? styles.inputError
+                  : value?.length > 0
+                  ? styles.inputSuccess
+                  : null,
+              ]}
+              placeholderTextColor={"gray"}
+            />
+            {errors.description ? (
+              <Text style={styles.errorText}>{errors.description.message}</Text>
+            ) : value?.length > 0 ? (
+              <Text style={styles.successText}>✓ Champ valide</Text>
+            ) : null}
+          </View>
         )}
       />
     </View>
@@ -59,6 +76,30 @@ export const Step3: React.FC<Step3Props> = ({
 };
 
 const styles = StyleSheet.create({
+  inputError: {
+  borderColor: colors.accent,
+  borderWidth: 1,
+  borderRadius: 8,
+},
+
+inputSuccess: {
+  borderColor: "green",
+  borderWidth: 1,
+  borderRadius: 8,
+},
+
+errorText: {
+  color: colors.accent,
+  marginTop: spacing.xs,
+  marginLeft: spacing.xs,
+},
+
+successText: {
+  color: "green",
+  marginTop: spacing.xs,
+  marginLeft: spacing.xs,
+},
+
   content: {
     gap: spacing.md,
   },

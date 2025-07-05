@@ -20,6 +20,7 @@ export const Step2: React.FC<Step2Props> = ({ control, errors }) => {
         name="category"
         render={({ field: { onChange, onBlur, value } }) => (
           <StyledInput
+            label="Category"
             placeholder="Catégorie"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -28,12 +29,13 @@ export const Step2: React.FC<Step2Props> = ({ control, errors }) => {
           />
         )}
       />
-      
+
       <Controller
         control={control}
         name="vendeur"
         render={({ field: { onChange, onBlur, value } }) => (
           <StyledInput
+            label="Vendeur"
             placeholder="Vendeur"
             onBlur={onBlur}
             onChangeText={onChange}

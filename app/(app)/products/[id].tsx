@@ -6,7 +6,14 @@ import {
   Href,
   useFocusEffect,
 } from "expo-router";
-import { Tag, Package, User, DollarSign } from "lucide-react-native";
+import {
+  Tag,
+  Package,
+  User,
+  DollarSign,
+  Edit3Icon,
+  Trash,
+} from "lucide-react-native";
 
 import { typography, colors, spacing } from "@/src/theme";
 
@@ -92,6 +99,7 @@ export default function ProductDetailScreen() {
 
         <View style={styles.actions}>
           <StyledButton
+            icon={<Edit3Icon size={24} color={colors.white} />}
             title="Modifier"
             onPress={() => {
               router.push(`products/edit/${id}` as Href);
@@ -99,6 +107,7 @@ export default function ProductDetailScreen() {
             variant="secondary"
           />
           <StyledButton
+            icon={<Trash size={24} />}
             title="Supprimer"
             onPress={handleDelete}
             variant="danger"
@@ -112,9 +121,9 @@ export default function ProductDetailScreen() {
 const styles = StyleSheet.create({
   image: { width: "100%", height: 300, backgroundColor: colors.white },
   content: { padding: spacing.md },
-  name: { ...typography.h1, marginBottom: spacing.sm, color: colors.white },
+  name: { ...typography.h2, marginBottom: spacing.sm, color: colors.white },
   description: {
-    ...typography.body,
+    ...typography.caption,
     opacity: 0.8,
     lineHeight: 22,
     marginBottom: spacing.lg,

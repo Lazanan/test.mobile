@@ -27,7 +27,7 @@ export const useProductFiltering = (
       const minPrice = parseFloat(activeFilters.price.min);
       const maxPrice = parseFloat(activeFilters.price.max);
 
-      const priceMatchMin = !isNaN(minPrice)
+      const priceMatchMin = !isNaN(minPrice)  
         ? parseFloat(product.price.toString()) >= minPrice
         : true;
 

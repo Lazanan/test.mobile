@@ -1,18 +1,19 @@
 import React from "react";
-import { View, Text, StyleSheet} from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Screen } from "@/src/components/Screen";
 import { typography, colors, spacing } from "@/src/theme";
-import { User, Package, DollarSign } from "lucide-react-native";
-import { StyledButton } from "@/src/components/StyledButton";
+import { User, Package, DollarSign, LogOut, ArrowRight } from "lucide-react-native";
 import { LoadingIndicator } from "@/src/components/LoadingIndicator";
 import { formatCurrency } from "@/src/utils/formatter";
 import { EditableField } from "@/src/components/profile/EditableField";
 import { useHandleProfile } from "@/src/hooks/useHandleProfile";
+import { Href, useRouter } from "expo-router";
 
 // Le composant principal de l'écran de profil
 export default function ProfileScreen() {
   const { user, userStats, logout, handleUpdate } = useHandleProfile();
+  const router = useRouter()
 
   if (!user) {
     return <LoadingIndicator />;
@@ -23,7 +24,7 @@ export default function ProfileScreen() {
       <KeyboardAwareScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         keyboardShouldPersistTaps="handled"
-        extraScrollHeight={100} 
+        extraScrollHeight={100}
         enableOnAndroid={true}
       >
         {/*Section Header*/}
@@ -52,6 +53,11 @@ export default function ProfileScreen() {
           </View>
         </View>
 
+        <Pressable style={styles.myProductsLink} onPress={() => router.push(`products/myproducts/${user.id}` as Href)}>
+          <Text style={styles.myProductsLinkLabel}>Voir Mes Produits</Text>
+          <ArrowRight color={colors.yellow}/>
+        </Pressable>
+
         {/*Section Informations et Modification*/}
         <View style={styles.infoSection}>
           <Text style={styles.sectionTitle}>Mon Profil</Text>
@@ -69,9 +75,12 @@ export default function ProfileScreen() {
       </KeyboardAwareScrollView>
 
       {/*Bouton de déconnexion*/}
-      <View style={styles.logoutButtonContainer}>
-        <StyledButton title="Déconnexion" onPress={logout} variant="danger" />
-      </View>
+      {/* <View style={styles.logoutButtonContainer}> */}
+        <Pressable style={styles.logoutStyle} onPress={logout}>
+          {/* <Text style={{ ...typography.caption, fontWeight: 900, fontSize: 16 }}>Se déconnecter</Text> */}
+          <LogOut color={colors.yellow}/>
+        </Pressable>
+      {/* </View> */}
     </Screen>
   );
 }
@@ -93,7 +102,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: spacing.md,
     paddingHorizontal: spacing.md,
-    marginBottom: spacing.xl,
+    marginBottom: spacing.md,
   },
   statCard: {
     flex: 1,
@@ -113,5 +122,33 @@ const styles = StyleSheet.create({
     color: colors.text,
     marginBottom: spacing.sm,
   },
-  logoutButtonContainer: { padding: spacing.md, marginTop: "auto" },
+  logoutButtonContainer: {
+    padding: spacing.md,
+    marginTop: "auto",
+    flexDirection: "row",
+    // width: '100%',
+  },
+  logoutStyle: {
+    position: 'absolute',
+    borderRadius: 8,
+    // backgroundColor: colors.yellow,
+    flexDirection: "row",
+    flex: 1,
+    padding: spacing.md,
+    justifyContent: 'center',
+    gap: spacing.md,
+    top: 2,
+    right: 2,
+  },
+  myProductsLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.lg,
+    paddingHorizontal: spacing.md,
+    marginBottom: spacing.lg,
+  },
+  myProductsLinkLabel: {
+    fontSize: 20,
+    color: colors.white,
+  }
 });

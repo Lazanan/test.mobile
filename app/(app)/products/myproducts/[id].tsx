@@ -1,52 +1,49 @@
 import React, { useState } from "react";
-import {
-  View,
-  Pressable,
-  StyleSheet,
-  Text,
-  RefreshControl,
-} from "react-native";
+import { View, Pressable, StyleSheet, Text } from "react-native";
 import { useRouter, Href } from "expo-router";
 import { MasonryFlashList } from "@shopify/flash-list";
 
 import { Screen } from "@/src/components/Screen";
 import { Card } from "@/src/components/Card";
-import { FilterModal } from "@/src/components/FilterModal";
+import { FilterModal, Filters } from "@/src/components/FilterModal";
 import { SearchBar } from "@/src/components/SearchBar";
 import { LoadingIndicator } from "@/src/components/LoadingIndicator";
 import { ProductHeader } from "@/src/components/ProductHeader";
-import { ProductPagination } from "@/src/components/ProductPagination";
 
 import { colors, spacing, typography } from "@/src/theme";
 import { LucideListFilter } from "lucide-react-native";
 import { useHandleProductList } from "@/src/hooks/useHandleProductList";
 import { useProducts } from "@/src/hooks/useProducts";
+import { useAuth } from "@/src/hooks/useAuth";
+import { useProductFiltering } from "@/src/hooks/useProductFiltering";
+import { useHandleProfile } from "@/src/hooks/useHandleProfile";
 
-export default function ProductListScreen() {
+export default function MyProductListScreen() {
+  // Etats
+  const { userStats } = useHandleProfile();
   const [isFilterModalVisible, setFilterModalVisible] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeFilters, setActiveFilters] = useState<Filters>({
+    categories: [],
+    vendors: [],
+    price: { min: "", max: "" },
+  });
 
   const router = useRouter();
-  
+
   // customed hooks
-  const { products, isLoading, loadProducts } = useProducts();
+  const { handleAddPress, handleDelete } = useHandleProductList(searchQuery);
+  const { products, isLoading } = useProducts();
+  const { user } = useAuth();
+  const userProducts = products.filter((p) => p.vendeur.toLowerCase() === user?.name.toLowerCase());
+  const filteredProducts = useProductFiltering(
+    userProducts,
+    searchQuery,
+    activeFilters
+  );
 
-  const {
-    paginatedProducts,
-    totalPages,
-    currentPage,
-    activeFilters,
-    setCurrentPage,
-    handleAddPress,
-    handleApplyFilters,
-    handleDelete,
-  } = useHandleProductList(searchQuery);
-
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    await loadProducts();
-    setIsRefreshing(false);
+  const handleApplyFilters = (newFilters: Filters) => {
+    setActiveFilters(newFilters);
   };
 
   if (isLoading && products.length === 0) {
@@ -56,7 +53,11 @@ export default function ProductListScreen() {
   return (
     <Screen style={{ paddingHorizontal: spacing.sm }}>
       <View style={styles.flashlistContainer}>
-        <ProductHeader onAddPress={handleAddPress} />
+        <ProductHeader
+          onAddPress={handleAddPress}
+          title="Mes produits"
+          description="Parcourir les produits actuels"
+        />
 
         <View style={styles.header}>
           <SearchBar value={searchQuery} onChangeText={setSearchQuery} />
@@ -68,33 +69,23 @@ export default function ProductListScreen() {
           </Pressable>
         </View>
 
-        {paginatedProducts.length > 0 ? (
+        {filteredProducts.length > 0 ? (
           <>
             <MasonryFlashList
-              data={paginatedProducts}
+              data={filteredProducts}
               keyExtractor={(item) => item.id}
               numColumns={2}
               estimatedItemSize={225}
-              refreshControl={
-                <RefreshControl
-                  refreshing={isRefreshing}
-                  onRefresh={handleRefresh}
-                />
-              }
               renderItem={({ item }) => (
                 <Card
                   product={item}
                   onPress={() => router.push(`/products/${item.id}` as Href)}
-                  onEdit={() => router.push(`/products/edit/${item.id}` as Href)}
+                  onEdit={() =>
+                    router.push(`/products/edit/${item.id}` as Href)
+                  }
                   onDelete={() => handleDelete(item)}
                 />
               )}
-            />
-
-            <ProductPagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              setCurrentPage={setCurrentPage}
             />
           </>
         ) : (
