@@ -63,10 +63,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const updateUser = async (updatedData: Partial<UserDTO>) => {
     if (!user) throw new Error("Aucun utilisateur à mettre à jour.");
-
-    // Dans une vraie app, on appellerait l'API ici : await userApi.update(user.id, updatedData);
     
-    // Pour la simulation, on met à jour l'état local et on persiste dans AsyncStorage
+    //met à jour l'état local et on persiste dans AsyncStorage
     const newUser = { ...user, ...updatedData };
     setUser(newUser);
     await storage.storeUser(newUser); // Persister les changements
