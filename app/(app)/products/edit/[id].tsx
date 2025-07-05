@@ -3,7 +3,7 @@ import { Text, StyleSheet, View } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 
 import { Screen } from "@/src/components/Screen";
-import { ProductForm } from "@/src/components/ProductForm";
+import { ProductForm } from "@/src/components/productForm/ProductForm";
 import { LoadingIndicator } from "@/src/components/LoadingIndicator";
 
 import { typography, colors, spacing } from "@/src/theme";

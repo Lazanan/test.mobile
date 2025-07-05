@@ -21,6 +21,12 @@ export const EditableField = ({
     onSave(currentValue);
     setIsEditing(false);
   };
+  
+  const handleEdit = () => {
+    // On met à jour la valeur actuelle au cas où la prop 'value' aurait changé depuis le dernier rendu
+    setCurrentValue(value);
+    setIsEditing(true);
+  }
 
   return (
     <View style={styles.fieldContainer}>
@@ -31,14 +37,16 @@ export const EditableField = ({
             value={currentValue}
             onChangeText={setCurrentValue}
             style={styles.input}
-            autoFocus
+            autoFocus={true} // <-- AMÉLIORATION UX: Ouvre le clavier et met le focus automatiquement
+            onSubmitEditing={handleSave} // Optionnel: sauvegarde en appuyant sur "Entrée"
+            blurOnSubmit={false} // Garde le clavier ouvert si on soumet
           />
         ) : (
           <Text style={styles.fieldValue}>{value}</Text>
         )}
-        <Pressable onPress={isEditing ? handleSave : () => setIsEditing(true)}>
+        <Pressable onPress={isEditing ? handleSave : handleEdit}>
           {isEditing ? (
-            <Check color={colors.primary} size={22} />
+            <Check color={'green'} size={22} />
           ) : (
             <Edit3 color={colors.yellow} size={18} />
           )}
@@ -48,6 +56,7 @@ export const EditableField = ({
   );
 };
 
+// ... vos styles pour EditableField restent inchangés
 const styles = StyleSheet.create({
   fieldContainer: {
     backgroundColor: colors.white,
@@ -76,7 +85,8 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontFamily: "Lexend-Medium",
     flex: 1,
+    // On retire la marge pour un meilleur alignement
+    marginRight: spacing.sm, 
     padding: 0,
-    margin: 0,
   },
 });

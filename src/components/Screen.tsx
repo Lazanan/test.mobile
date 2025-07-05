@@ -5,9 +5,10 @@ import { spacing } from '../theme/spacing';
 import { StatusBar } from 'expo-status-bar';
 
 // Étendre ViewProps pour accepter toutes les props d'une View standard
-interface ScreenProps extends ViewProps {
+export interface ScreenProps extends ViewProps {
   children: React.ReactNode;
 }
+
 
 export const Screen: React.FC<ScreenProps> = ({ children, style, ...props }) => {
   return (

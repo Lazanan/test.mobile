@@ -14,9 +14,7 @@ import {
   X,
   ListFilterIcon,
   RotateCcw,
-  Check,
-  LayoutGrid,
-  DollarSign,
+  Check
 } from "lucide-react-native";
 import { colors, spacing, typography } from "../theme";
 import { ProductDTO } from "../dtos/ProductDTO";

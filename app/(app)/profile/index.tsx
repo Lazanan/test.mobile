@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet} from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Screen } from "@/src/components/Screen";
 import { typography, colors, spacing } from "@/src/theme";
 import { User, Package, DollarSign } from "lucide-react-native";
@@ -19,7 +20,12 @@ export default function ProfileScreen() {
 
   return (
     <Screen style={styles.screen}>
-      <ScrollView>
+      <KeyboardAwareScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
+        extraScrollHeight={100} 
+        enableOnAndroid={true}
+      >
         {/*Section Header*/}
         <View style={styles.header}>
           <View style={styles.avatar}>
@@ -60,7 +66,7 @@ export default function ProfileScreen() {
             onSave={(newValue) => handleUpdate("email", newValue)}
           />
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
 
       {/*Bouton de déconnexion*/}
       <View style={styles.logoutButtonContainer}>
