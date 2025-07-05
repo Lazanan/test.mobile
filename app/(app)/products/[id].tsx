@@ -26,6 +26,7 @@ import { useProducts } from "@/src/hooks/useProducts";
 import { useHandleProductDetail } from "@/src/hooks/useHandleProductDetail";
 import { ProductDTO } from "@/src/dtos/ProductDTO";
 import { ConfirmModal } from "@/src/components/global/ConfirmModal";
+import { useHandleProductList } from "@/src/hooks/useHandleProductList";
 
 export default function ProductDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -39,11 +40,11 @@ export default function ProductDetailScreen() {
   const [modalVisible, setModalVisible] = useState(false);
 
   // logique de suppression
-  const confirmDelete = (product: ProductDTO) => {
+  const confirmDelete = () => {
     setModalVisible(true);
   };
   const onDeleteConfirmed = () => {
-    handleDelete();
+    if(product) handleDelete(product);
     setModalVisible(false);
   };
 
@@ -124,7 +125,7 @@ export default function ProductDetailScreen() {
           <StyledButton
             icon={<Trash size={24} />}
             title="Supprimer"
-            onPress={() => confirmDelete}
+            onPress={() => confirmDelete()}
             variant="danger"
           />
         </View>

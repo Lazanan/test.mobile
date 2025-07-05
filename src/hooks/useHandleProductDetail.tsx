@@ -28,28 +28,17 @@ export const useHandleProductDetail = () => {
   }, [id, products]); //se redéclenchera si l'ID ou la liste de produits change
 
   // fonction pour supprimer un produit
-  const handleDelete = async () => {
-    if (product) {
-      Alert.alert(
-        "Supprimer le produit",
-        `Êtes-vous sûr de vouloir supprimer "${product.name}" ?`,
-        [
-          { text: "Annuler", style: "cancel" },
-          {
-            text: "Supprimer",
-            style: "destructive",
-            onPress: async () => {
-              // On appelle la fonction de suppression du contexte
-              await deleteProduct(product.id);
-
-              console.log(`Deleting product ${product.id}`);
-              router.back();
-            },
-          },
-        ]
-      );
-    }
-  };
+  const handleDelete = async (product: ProductDTO) => {
+      try {
+        await deleteProduct(product.id);
+        Alert.alert("Succès", "Le produit a été supprimé.");
+      } catch (error: any) {
+        Alert.alert(
+          "Erreur",
+          error.message || "Impossible de supprimer le produit."
+        );
+      }
+    };
 
   return { product, setProduct, fetchProduct, handleDelete };
 };
