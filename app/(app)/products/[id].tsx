@@ -55,12 +55,7 @@ export default function ProductDetailScreen() {
         const currentProduct = products.find((p) => p.id === id);
         if (currentProduct) {
           setProduct(currentProduct);
-        } else {
-          // Si le produit n'est pas dans la liste
-          Alert.alert("Produit introuvable", "Ce produit n'existe plus.", [
-            { text: "OK", onPress: () => router.back() },
-          ]);
-        }
+        } 
       }
     }, [id, products])
   ); //Redéclenche si l'ID ou la liste de produits change
