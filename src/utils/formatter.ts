@@ -1,10 +1,5 @@
-// src/utils/formatters.ts
-
 /**
  * Formate un nombre en une chaîne de caractères monétaire avec le symbole Euro.
- * Gère les cas où le nombre est undefined ou null.
- * @param value - Le nombre à formater.
- * @returns Une chaîne de caractères formatée ".
  */
 export function formatCurrency(value: number): string {
   if (value >= 1_000_000_000) {

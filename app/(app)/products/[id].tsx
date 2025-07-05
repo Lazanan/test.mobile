@@ -156,7 +156,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: spacing.md,
     padding: spacing.md,
-    marginTop: spacing.lg,
   },
   infoGrid: { flexDirection: "row", flexWrap: "wrap", gap: spacing.md },
 });

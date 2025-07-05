@@ -4,7 +4,7 @@ import { useProducts } from "./useProducts";
 import { Alert } from "react-native";
 
 export function useHandleProfile() {
-  const { user, updateUser } = useAuth();
+  const { user, updateUser, logout } = useAuth();
   const { products } = useProducts();
   
   // recuperer les stats de l'utilisateur
@@ -39,6 +39,25 @@ export function useHandleProfile() {
       Alert.alert("Erreur", error.message);
     }
   };
+  
+  const handleLogOut = () => {
+    Alert.alert(
+    "Déconnexion",
+    "Voulez-vous vraiment vous déconnecter ?",
+    [
+      {
+        text: "Annuler",
+        style: "cancel",
+      },
+      {
+        text: "Déconnexion",
+        style: "destructive",
+        onPress: logout,
+      },
+    ],
+    { cancelable: true }
+  );
+  }
 
-  return { user, userStats, handleUpdate};
+  return { user, userStats, handleLogOut, handleUpdate};
 }
